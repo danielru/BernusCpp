@@ -64,7 +64,7 @@ The currents and pumps are defined as
 \begin{equation}
 	i_{\rm Na} = g_{\rm Na} m^3 v^2 \left( V - E_{\rm Na} \right)
 \end{equation}
-where $E_{\rm Na}$ is the equilibrium current and $m$ and $v$ are gating variables.
+where $E_{\rm Na}$ is the equilibrium current and $m$ and $v$ are ODE-based gating variables.
 \item {\bf Calcium current}
 \begin{equation}
 	i_{\rm Ca} = g_{\rm Ca} d_{\infty} f f_{\rm Ca} \left( V - E_{\rm Ca} \right)
@@ -99,25 +99,64 @@ with equilibrium current $E_{\rm Na}$ and no gating variables.
 \begin{equation}
 	i_{\rm Na, K} = g_{\rm Na, K} f_{\rm Na, K} f_{\rm Na, K, a}
 \end{equation}
-with stationary gating variables $f_{\rm Na, K}$, $f_{\rm Na, K, a}$.
+with no gating variables
 \item {\bf Sodium calcium pump.}
 \begin{equation}
 	i_{\rm Na, Ca} = g_{\rm Na, Ca} f_{\rm Na, Ca}
 \end{equation}
-with a stationary gate variable $f_{\rm Na, Ca}$.
+with no gating variables.
 \end{enumerate}
 %
 %
 \subsection{Gating variables}
 \begin{table}[ht]
+\centering
 \begin{tabular}{cc}
 \multicolumn{2}{c}{\bf ODE-based Gate variables}\\
-bla
-\end{tabular}\\
+Sodium current $m$ gate & $m$ \\
+Sodium current $v$ gate & $v$ \\
+Calcium current $f$ gate & $f$ \\
+Transient outward current $to$ gate & $to$ \\
+Delayed rectifier potassium current $X$ gate & $X$ 
+\end{tabular}\\[1em]
 %
 \begin{tabular}{cc}
 \multicolumn{2}{c}{\bf Diagnostic gate variables}\\
-blub
+Calcium current $d$ gate & $d_{\infty}$\\
+Calcium current $f_{\rm Ca}$ gate & $f_{\rm Ca}$ \\
+Transient current outward $r$ gate & $r_{\infty}$ \\
+Inward rectifier potassium current $K_1$ gate & $K_{1, \infty}$
 \end{tabular}
 \end{table}
+%
+%
+\subsubsection{ODE-based gating variables}
+\begin{enumerate}
+\item {\bf Sodium current $m$ gate}
+\begin{equation}
+	\partial_t m = \alpha_m \left(1 - m \right) - \beta_m m
+\end{equation}
+with parameters $\alpha_m$, $\beta_m$ depending on the potential $v$.
+\item {\bf Sodium current $v$ gate}
+\begin{equation}
+	\partial_t v = \frac{1}{\tau_v} \left( v_{\infty} - v \right)
+\end{equation}
+with potential-dependent parameters $v_{\infty}$ and $\tau_v$.
+\item {\bf Calcium current $f$ gate}
+\begin{equation}
+	\partial_t f = \alpha_f \left( 1 - f \right)  - \beta_f f
+\end{equation}
+with potential-dependent parameters $\alpha_f$, $\beta_f$.
+\item {\bf Transient outward current $to$ gate.}
+\begin{equation}
+	\partial_t to = \alpha_{\rm to} \left(1 - to \right) - \beta_{\rm to} to
+\end{equation}
+with potential-dependent parameters $\alpha_{\rm to}$, $\beta_{\rm to}$.
+\item {\bf Delayed rectifier potassium current $X$ gate.}
+\begin{equation}
+	\partial_t X = \frac{1}{\tau_{\rm X}} \left( X_{\infty} - X \right)
+\end{equation}
+with potential-dependent parameters $X_{\infty}$, $\tau_{\rm X}$.
+\end{enumerate}
+
 \end{document}
