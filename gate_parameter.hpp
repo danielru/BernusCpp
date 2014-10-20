@@ -80,7 +80,7 @@ class gate_parameter
  */
 
 /**
- * (1) Sodium current i_Na
+ * (1) Sodium current i_Na (4 Functions)
  */
 
 //! m-gate
@@ -90,7 +90,6 @@ inline double gate_parameter::alpha_m(double V)
 inline double gate_parameter::beta_m(double V)
 { return 0.08*exp(-V/11.0); }
 
-
 //! v-gate
 inline double gate_parameter::v_inf(double V)
 { return 0.5*(1.0 - (tanh(7.74 + 0.12*V))); }
@@ -99,7 +98,7 @@ inline double gate_parameter::tau_v(double V)
 { return 0.25 + 2.24*( 1.0-(tanh(7.74 + 0.12*V)) )/( 1.0 - tanh(0.07*(92.4+V)) ); }
 
 /**
- * (2) Calcium current i_Ca
+ * (2) Calcium current i_Ca (5 functions)
  */
 
 //! d-gate
@@ -124,7 +123,7 @@ inline double gate_parameter::f_ca(double V)
 { return 1.0/(1.0 + this->Ca_i/0.0006); }
 
 /**
- * (3) Transient outward current i_to
+ * (3) Transient outward current i_to (7 functions)
  */
 
 //! r-gate
@@ -132,10 +131,10 @@ inline double gate_parameter::r_inf(double V)
 { return alpha_r(V)/(alpha_r(V)+beta_r(V)); }
 
 inline double gate_parameter::alpha_r(double V)
-{ return 0.5266*exp(-0.0166*(V-42.2912))/(1.0 + exp(-0.0943*(V-42.2912))); } //TODO: Insert correct function
+{ return 0.5266*exp(-0.0166*(V-42.2912))/(1.0 + exp(-0.0943*(V-42.2912))); }
 
 inline double gate_parameter::beta_r(double V)
-{ return (5.186*1e-5*V+0.5149*exp(-0.1344*(V-5.0027)))/(1.0 + exp(-0.1348*(V-5.186*1e-5))); } //TODO: Insert correct function
+{ return (5.186*1e-5*V+0.5149*exp(-0.1344*(V-5.0027)))/(1.0 + exp(-0.1348*(V-5.186*1e-5))); }
 
 //! to-gate
 inline double gate_parameter::alpha_to(double V)
@@ -151,7 +150,7 @@ inline double gate_parameter::to_inf(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
- * (4) Delayed rectifier potassium current i_K
+ * (4) Delayed rectifier potassium current i_K (3 functions)
  */
 
 //! X-gate
@@ -165,7 +164,7 @@ inline double gate_parameter::tau_x_a(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
- * (5) Inward rectifier potassium current i_K1
+ * (5) Inward rectifier potassium current i_K1 (3 functions)
  */
 
 //! K1-gate
@@ -179,7 +178,7 @@ inline double beta_k1(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
- * (8) Sodium potassium pump
+ * (8) Sodium potassium pump (3 functions)
  */
 inline double f_nak(double V)
 {
@@ -190,7 +189,7 @@ inline double f_nak_a(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
- * (9) Sodium calcium pump i_NaCa
+ * (9) Sodium calcium pump i_NaCa (1 function)
  */
 inline double f_naca(double V)
 { return 0.0; } //TODO: Insert correct function
