@@ -32,6 +32,7 @@
 
 \section{Bernus model}
 From~\texttt{https://models.cellml.org/}. 
+Because at least the functions computing potential-dependent parameters will be called very often, they should probably be defined in a header file and be tagged with the \texttt{inline} keyword. Alternatively they could be made \texttt{static}?
 
 \subsection{Currents and pumps}
 There are 9 currents, each employing different gating variables. 
@@ -158,5 +159,29 @@ with potential-dependent parameters $\alpha_{\rm to}$, $\beta_{\rm to}$.
 \end{equation}
 with potential-dependent parameters $X_{\infty}$, $\tau_{\rm X}$.
 \end{enumerate}
-
+%
+%
+\subsubsection{Algebraic gating variables}
+\begin{enumerate}
+\item {\bf Calcium current $d$ gate}
+\begin{equation}
+	d_{\rm infty} = \frac{\alpha_d}{\alpha_d + \beta_d}
+\end{equation}
+with potential-dependent parameters $\alpha_d$, $\beta_d$.
+\item {\bf Calcium current $f_{\rm Ca}$ gate.}
+\begin{equation}
+	f_{\rm Ca} = \frac{1.0}{1.0 + \frac{Ca_i}{6 \times 10^{-4}}}
+\end{equation}
+\item {\bf Transient outward current $r$ gate}
+\begin{equation}
+	r_{\infty} = \frac{\alpha_r}{\alpha_r + \beta_r}
+\end{equation}
+with potential-dependent parameters $\alpha_r$, $\beta_r$.
+\item {\bf Inward rectifier potassium current $K_1$ gate.}
+\begin{equation}
+	K_{1, \infty} = \frac{\alpha_{K_1}}{\alpha_{K_1} + \beta_{K_1}}
+\end{equation}
+with potential-dependent parameters $\alpha_{K_1}$, $\beta_{K_1}$.
+\end{enumerate}
+\subsection{Parameter}
 \end{document}
