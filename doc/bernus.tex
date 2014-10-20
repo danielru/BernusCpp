@@ -1,0 +1,123 @@
+\documentclass{scrartcl}
+
+\usepackage{geometry}
+\geometry{paper=a4paper,headheight=5mm, footskip=7.0mm, footnotesep=2mm, margin=20mm, tmargin=15.25mm, bmargin=15.0mm, includeheadfoot}
+
+\usepackage{amsmath}
+\usepackage{amsthm}
+\usepackage{amssymb}
+\newtheorem{theorem}{Theorem}
+\newtheorem{lemma}{Lemma}
+\newtheorem{prop}{Proposition}
+\newtheorem{remark}{Remark}
+\newcommand{\super}[1]{\textsuperscript{#1}}
+\usepackage{enumitem}
+
+\def\sodcurr {$i_{\rm Na}$}
+\def\calcurr {$i_{\rm Ca}$}
+\def\tocurr {$i_{\rm to}$}
+\def\potcurr {$i_{\rm K}$}
+\def\pincurr {$i_{\rm K1}$}
+\def\cabacurr { $i_{\rm b, Ca}$ }
+\def\nabacurr { $i_{\rm b, Na}$ }
+\def\napopump { $i_{\rm Na, K}$ }
+\def\nacapump{ $i_{\rm Na, Ca}$ }
+
+\begin{document}
+
+\title{Bernus model}
+\author{Daniel Ruprecht}
+
+\maketitle
+
+\section{Bernus model}
+From~\texttt{https://models.cellml.org/}. 
+
+\subsection{Currents and pumps}
+There are 9 currents, each employing different gating variables. 
+These gating variables depend on the membrane potential $V$.
+Below, we distinguish between so-called ''stationary'' gates which are given by algebraic equations and time-dependent gates, which are described by ODEs and therefore have to be included in the time-stepping procedure.
+\begin{table}[th]
+\centering
+\begin{tabular}{cc}
+\multicolumn{2}{c}{\bf Currents and pumps}\\
+Sodium current & \sodcurr \\
+Calcium current & \calcurr \\
+Transient outward current & \tocurr \\
+Delayed rectifier potassium current & \potcurr \\
+Inward rectifier potassium current & \pincurr \\
+Calcium background current & \cabacurr \\
+Sodium background current & \nabacurr \\
+Sodium potassium pump & \napopump \\
+Sodium calcium pump & \nacapump
+\end{tabular}
+%
+\caption{Currents and pumps in the Bernus model.}
+\end{table}
+Forcing term for monodomain equation reads
+\begin{equation}
+	C_{\rm m} I_{\rm ion}(V) = i_{\rm Na} + i_{\rm Ca} + i_{\rm to} + i_{\rm K} + i_{\rm K1} +  i_{\rm b, Ca} + i_{\rm b, Na}  + i_{\rm Na, K} + i_{\rm Na, Ca}
+\end{equation}
+The currents and pumps are defined as
+\begin{enumerate}
+\item {\bf Sodium current}
+\begin{equation}
+	i_{\rm Na} = g_{\rm Na} m^3 v^2 \left( V - E_{\rm Na} \right)
+\end{equation}
+where $E_{\rm Na}$ is the equilibrium current and $m$ and $v$ are gating variables.
+\item {\bf Calcium current}
+\begin{equation}
+	i_{\rm Ca} = g_{\rm Ca} d_{\infty} f f_{\rm Ca} \left( V - E_{\rm Ca} \right)
+\end{equation}
+with $E_{\rm Ca}$ the equilibrium current, $f$ a time-dependent gate and  $d_{\infty}$ and $f_{\rm Ca}$ ''stationary'' gating variables, i.e. given by simple algebraic equations instead of ODEs.
+\item {\bf Transient outward current.}
+\begin{equation}
+	i_{\rm to} = g_{\rm to} r_{\infty} to \left( V - E_{\rm to} \right)
+\end{equation}
+with equilibrium current $E_{\rm to}$, time-dependent gate $to$ and stationary gate $r_{\infty}$.
+\item {\bf Delayed rectifier potassium current.}
+\begin{equation}
+	i_{\rm K} = g_{\rm K} X^2 \left( V - E_{\rm K} \right)
+\end{equation}
+with equilibrium current $E_{\rm K}$ and time-dependent gate $X$.
+\item {\bf Inward rectifier potassium current.}
+\begin{equation}
+	i_{\rm K1} = g_{\rm K1} K_{1, \infty} \left( V - E_{\rm K} \right)
+\end{equation}
+with equilibrium current $E_{\rm K}$ and stationary gate $K_{1, \infty}$.
+\item {\bf Calcium background current.}
+\begin{equation}
+	i_{\rm b, Ca} = g_{\rm b, Ca} \left( V - E_{\rm Ca} \right)
+\end{equation}
+with equilibrium current $E_{\rm Ca}$ and no gating variables.
+\item {\bf Sodium background current.}
+\begin{equation}
+	i_{\rm b, Na} = g_{\rm b, Na} \left( V - E_{\rm Na} \right)
+\end{equation}
+with equilibrium current $E_{\rm Na}$ and no gating variables.
+\item {\bf Sodium potassium pump.}
+\begin{equation}
+	i_{\rm Na, K} = g_{\rm Na, K} f_{\rm Na, K} f_{\rm Na, K, a}
+\end{equation}
+with stationary gating variables $f_{\rm Na, K}$, $f_{\rm Na, K, a}$.
+\item {\bf Sodium calcium pump.}
+\begin{equation}
+	i_{\rm Na, Ca} = g_{\rm Na, Ca} f_{\rm Na, Ca}
+\end{equation}
+with a stationary gate variable $f_{\rm Na, Ca}$.
+\end{enumerate}
+%
+%
+\subsection{Gating variables}
+\begin{table}[ht]
+\begin{tabular}{cc}
+\multicolumn{2}{c}{\bf ODE-based Gate variables}\\
+bla
+\end{tabular}\\
+%
+\begin{tabular}{cc}
+\multicolumn{2}{c}{\bf Diagnostic gate variables}\\
+blub
+\end{tabular}
+\end{table}
+\end{document}
