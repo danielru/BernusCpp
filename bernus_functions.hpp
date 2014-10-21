@@ -23,6 +23,10 @@ class bernus_functions
   
   public:
   
+  bernus_functions(){};
+  
+  ~bernus_functions(){};
+  
   //! TODO: To later be able to easily run the whole ion channel
   //! model in single precision, introduce a ionprec typedef accuracy
   
@@ -171,30 +175,30 @@ inline double bernus_functions::tau_x_a(double V)
  */
 
 //! K1-gate
-inline double k1_inf(double V)
+inline double bernus_functions::k1_inf(double V)
 { return 0.0; } //TODO: Insert correct function
 
-inline double alpha_k1(double V)
+inline double bernus_functions::alpha_k1(double V)
 { return 0.0; } //TODO: Insert correct function
 
-inline double beta_k1(double V)
+inline double bernus_functions::beta_k1(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
  * (8) Sodium potassium pump (3 functions)
  */
-inline double f_nak(double V)
+inline double bernus_functions::f_nak(double V)
 {
 double sigma = 0.0;
 return 0.0; } //TODO: Insert correct function
 
-inline double f_nak_a(double V)
+inline double bernus_functions::f_nak_a(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
  * (9) Sodium calcium pump i_NaCa (1 function)
  */
-inline double f_naca(double V)
+inline double bernus_functions::f_naca(double V)
 { return 0.0; } //TODO: Insert correct function
 
 #endif // BERNUS_FUNCTIONS

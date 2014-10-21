@@ -17,6 +17,9 @@ public:
     for(int i=0; i<this->ngates; i++){
       this->gates[i] = 0.0;
     }
+    
+    // Initialize bernus function object
+    this->_bnf = new bernus_functions();
   };
   
   double ionforcing(double);
@@ -28,6 +31,8 @@ public:
   
 private:
   
+  //! Object providing all the necessary functions to compute parameter
+  bernus_functions * _bnf;
   
   /**
    * The total ionic current of the Bernus model is comprised of nine
@@ -117,16 +122,16 @@ inline double bernus::i_na(double V)
 {return 0.0;}
 
 inline double bernus::i_ca(double V)
-{return 0.0;}
+{return _bnf->d_inf(V)*_bnf->f_ca(V);}
 
 inline double bernus::i_to(double V)
-{return 0.0;}
+{return _bnf->r_inf(V);}
 
 inline double bernus::i_k(double V)
 {return 0.0;}
 
 inline double bernus::i_k1(double V)
-{return 0.0;}
+{return _bnf->k1_inf(V);}
 
 inline double bernus::i_b_ca(double V)
 {return 0.0;}
