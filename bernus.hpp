@@ -110,9 +110,9 @@ inline double bernus::ionforcing(double V)
   return i_na(V)+i_ca(V)+i_to(V)+i_k(V)+i_k1(V)+i_b_ca(V)+i_b_na(V)+i_na_k(V)+i_na_ca(V);
 }
 
- /**
-  * Functions for the nine different ion currents in the Bernus model
-  */
+/**
+ * Functions for the nine different ion currents in the Bernus model
+ */
 inline double bernus::i_na(double V)
 {return 0.0;}
 
