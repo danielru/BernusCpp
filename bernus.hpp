@@ -118,18 +118,24 @@ inline double bernus::ionforcing(double V)
 /**
  * Functions for the nine different ion currents in the Bernus model
  */
+
+ //! Sodium current i_Na
 inline double bernus::i_na(double V)
 {return 0.0;}
 
+//! Calcium current i_Ca
 inline double bernus::i_ca(double V)
 {return _bnf->d_inf(V)*_bnf->f_ca(V);}
 
+//! Transient outward current i_to
 inline double bernus::i_to(double V)
 {return _bnf->r_inf(V);}
 
+//! Delated rectifier potassium current i_K
 inline double bernus::i_k(double V)
 {return 0.0;}
 
+//! Inward rectifier potassium current i_K1
 inline double bernus::i_k1(double V)
 {return _bnf->k1_inf(V);}
 
@@ -140,7 +146,7 @@ inline double bernus::i_b_na(double V)
 {return 0.0;}
 
 inline double bernus::i_na_k(double V)
-{return 0.0;}
+{return _bnf->f_nak(V)*_bnf->f_nak_a(V);}
 
 inline double bernus::i_na_ca(double V)
-{return 0.0;}
+{return _bnf->f_naca(V);}
