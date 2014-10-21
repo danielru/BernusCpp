@@ -5,18 +5,20 @@
 #include "bernus_functions.hpp"
 
 class bernus: public Iionmodel {
-
+  
 public:
   
   bernus() {
     //TODO: Find out how to make this const and static but still a function of
     // the other parameters...
     this->test = bernus::R*bernus::T*bernus::Fa;
+    
+    //TODO: Somehow initialize gating variables
     for(int i=0; i<this->ngates; i++){
       this->gates[i] = 0.0;
     }
   };
-
+  
   double ionforcing(double);
   
   double* statevars_rhs();
@@ -25,24 +27,24 @@ public:
   int static const ngates = 5;
   
 private:
-
+  
   
   /**
-   * The total ionic current of the Bernus model is comprised of nine 
+   * The total ionic current of the Bernus model is comprised of nine
    * different currents.
    */
   
-   //! Sodium current
-   double i_na(double);
+  //! Sodium current
+  double i_na(double);
   
-   //! Calcium current
-   double i_ca(double);
+  //! Calcium current
+  double i_ca(double);
   
-   //! Transient outward current
-   double i_to(double);
+  //! Transient outward current
+  double i_to(double);
   
-   //! Delayed rectifier potassium current
-   double i_k(double);
+  //! Delayed rectifier potassium current
+  double i_k(double);
   
   //! Inward rectifier potassium current
   double i_k1(double);
@@ -63,14 +65,14 @@ private:
    * Member variables
    */
   
-   //! Values of ODE-based gate variables
-   double gates [ngates];
-
+  //! Values of ODE-based gate variables
+  double gates [ngates];
+  
   /**
    * Constants below are from Table 1 in Bernus et al.
    * TODO: Check physical units...
    */
-   //TODO: Should make precision here choosable as well
+  //TODO: Should make precision here choosable as well
   double static const g_na   = 16.0;
   double static const g_ca   = 0.064;
   double static const g_to   = 0.4;
@@ -94,6 +96,46 @@ private:
   
   //! Equilibrium potentials
   double test;
-
+  
 };
 #endif // BERNUS
+
+/**
+ * To faciliate inlining, the ion current functions are implemented here, in the header file.
+ */
+
+//! Interface functions
+inline double bernus::ionforcing(double V)
+{
+  return i_na(V)+i_ca(V)+i_to(V)+i_k(V)+i_k1(V)+i_b_ca(V)+i_b_na(V)+i_na_k(V)+i_na_ca(V);
+}
+
+ /**
+  * Functions for the nine different ion currents in the Bernus model
+  */
+inline double bernus::i_na(double V)
+{return 0.0;}
+
+inline double bernus::i_ca(double V)
+{return 0.0;}
+
+inline double bernus::i_to(double V)
+{return 0.0;}
+
+inline double bernus::i_k(double V)
+{return 0.0;}
+
+inline double bernus::i_k1(double V)
+{return 0.0;}
+
+inline double bernus::i_b_ca(double V)
+{return 0.0;}
+
+inline double bernus::i_b_na(double V)
+{return 0.0;}
+
+inline double bernus::i_na_k(double V)
+{return 0.0;}
+
+inline double bernus::i_na_ca(double V)
+{return 0.0;}
