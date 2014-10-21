@@ -6,6 +6,9 @@
  * All functions here are oneliners, so that the compiler
  * can inline them easily.
  *
+ * For the equations implemented below and further details on the model, see
+ * the original paper by Bernus et al., ""
+ *
  * Daniel Ruprecht, October 20, 2014
  *
  */
@@ -23,13 +26,13 @@ class bernus_functions
   //! TODO: To later be able to easily run the whole ion channel
   //! model in single precision, introduce a ionprec typedef accuracy
   
-  //! Sodium current
+  //! Sodium current (eqns 14-17 in Bernus et al.)
   double alpha_m(double);
   double beta_m(double);
   double v_inf(double);
   double tau_v(double);
   
-  //! Calcium current
+  //! Calcium current (eqns 19-24 in Bernus et al.)
   double d_inf(double);
   double alpha_d(double);
   double beta_d(double);
@@ -37,7 +40,7 @@ class bernus_functions
   double beta_f(double);
   double f_ca(double);
   
-  //! Transient outward current
+  //! Transient outward current (eqns 26-32 in Bernus et al.)
   double r_inf(double);
   double alpha_r(double);
   double beta_r(double);
@@ -46,12 +49,12 @@ class bernus_functions
   double tau_to(double);
   double to_inf(double);
   
-  //! Delayed rectifier potassium current
+  //! Delayed rectifier potassium current (eqns 34-36 in Bernus et al.)
   double x_inf(double);
   double tau_x(double);
-  double tau_x_a(double);
+  double tau_x_a(double); //TODO: These functions apparently depend also on the cell type
   
-  //! Inward rectifier potassium current
+  //! Inward rectifier potassium current (eqns 40-42 in Bernus et al.)
   double k1_inf(double);
   double alpha_k1(double);
   double beta_k1(double);
@@ -60,11 +63,11 @@ class bernus_functions
   
   //! Sodium background current: No parameter functions needed
   
-  //! Sodium potassium pump
+  //! Sodium potassium pump (eqns 47, 48 in Bernus et al.; eq 49 is integrated in f_nak)
   double f_nak(double);
   double f_nak_a(double);
   
-  //! Sodium calcium pump
+  //! Sodium calcium pump (eq 50 in Bernus et al.)
   double f_naca(double);
   
   private:
