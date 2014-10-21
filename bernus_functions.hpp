@@ -30,53 +30,55 @@ class bernus_functions
   //! TODO: To later be able to easily run the whole ion channel
   //! model in single precision, introduce a ionprec typedef accuracy
   
+  //! Note that all the functions below are static and do not depend on any state variables.
+  
   //! Sodium current (eqns 14-17 in Bernus et al.)
-  double alpha_m(double);
-  double beta_m(double);
-  double v_inf(double);
-  double tau_v(double);
+  static double alpha_m(double);
+  static double beta_m(double);
+  static double v_inf(double);
+  static double tau_v(double);
   
   //! Calcium current (eqns 19-24 in Bernus et al.)
-  double d_inf(double);
-  double alpha_d(double);
-  double beta_d(double);
-  double alpha_f(double);
-  double beta_f(double);
-  double f_ca(double);
+  static double d_inf(double);
+  static double alpha_d(double);
+  static double beta_d(double);
+  static double alpha_f(double);
+  static double beta_f(double);
+  static double f_ca(double);
   
   //! Transient outward current (eqns 26-32 in Bernus et al.)
-  double r_inf(double);
-  double alpha_r(double);
-  double beta_r(double);
-  double alpha_to(double);
-  double beta_to(double);
-  double tau_to(double);
-  double to_inf(double);
+  static double r_inf(double);
+  static double alpha_r(double);
+  static double beta_r(double);
+  static double alpha_to(double);
+  static double beta_to(double);
+  static double tau_to(double);
+  static double to_inf(double);
   
   //! Delayed rectifier potassium current (eqns 34-36 in Bernus et al.)
-  double x_inf(double);
-  double tau_x(double);
-  double tau_x_a(double); //TODO: These functions apparently depend also on the cell type
+  static double x_inf(double);
+  static double tau_x(double);
+  static double tau_x_a(double); //TODO: These functions apparently depend also on the cell type
   
   //! Inward rectifier potassium current (eqns 40-42 in Bernus et al.)
-  double k1_inf(double);
-  double alpha_k1(double);
-  double beta_k1(double);
+  static double k1_inf(double);
+  static double alpha_k1(double);
+  static double beta_k1(double);
   
   //! Calcium background current: No parameter functions needed
   
   //! Sodium background current: No parameter functions needed
   
   //! Sodium potassium pump (eqns 47, 48 in Bernus et al.; eq 49 is integrated in f_nak)
-  double f_nak(double);
-  double f_nak_a(double);
+  static double f_nak(double);
+  static double f_nak_a(double);
   
   //! Sodium calcium pump (eq 50 in Bernus et al.)
-  double f_naca(double);
+  static double f_naca(double);
   
   private:
   
-  double static const Ca_i = 0.0; // TODO: Insert correct value
+  double static const ca_i = 0.0; // TODO: Insert correct value
   
 };
 
@@ -127,7 +129,7 @@ inline double bernus_functions::beta_f(double V)
 
 //! f_Ca-gate
 inline double bernus_functions::f_ca(double V)
-{ return 1.0/(1.0 + this->Ca_i/0.0006); }
+{ return 1.0/(1.0 + bernus_functions::ca_i/0.0006); }
 
 /**
  * (3) Transient outward current i_to (7 functions)

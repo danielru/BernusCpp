@@ -16,7 +16,7 @@ public:
     }
     
     // Initialize bernus function object
-    this->_bnf = new bernus_functions();
+    //this->_bnf = new bernus_functions();
     
     //TODO: Efficient calculation of equilibrium potentials from constants
     this->_e_na = 0.0*bernus::R*bernus::T;
@@ -36,11 +36,13 @@ public:
 private:
   
   //! Object providing all the necessary functions to compute parameter
-  bernus_functions * _bnf;
+  static bernus_functions _bnf;
   
   /**
    * The total ionic current of the Bernus model is comprised of nine
-   * different currents.
+   * different currents. In contrast to the parameter functions, the
+   * ion current functions depend on the state of the cell, represented
+   * by the ODE-based gating variables.
    */
   
   //! Sodium current
@@ -129,11 +131,11 @@ inline double bernus::i_na(double V)
 
 //! Calcium current i_Ca
 inline double bernus::i_ca(double V)
-{return _g_ca*_bnf->d_inf(V)*_bnf->f_ca(V)*(V-_e_ca);} //TODO: add ODE-based gate f
+{return _g_ca*(_bnf.d_inf(V))*(_bnf.f_ca(V))*(V-_e_ca);} //TODO: add ODE-based gate f
 
 //! Transient outward current i_to
 inline double bernus::i_to(double V)
-{return _g_k*_bnf->r_inf(V)*(V-_e_to);} //TODO: add ODE-based gate to
+{return _g_k*(_bnf.r_inf(V))*(V-_e_to);} //TODO: add ODE-based gate to
 
 //! Delated rectifier potassium current i_K
 inline double bernus::i_k(double V)
@@ -141,7 +143,7 @@ inline double bernus::i_k(double V)
 
 //! Inward rectifier potassium current i_K1
 inline double bernus::i_k1(double V)
-{return _g_k1*_bnf->k1_inf(V)*(V-_e_k);}
+{return _g_k1*(_bnf.k1_inf(V))*(V-_e_k);}
 
 //! Calcium background current
 inline double bernus::i_b_ca(double V)
@@ -153,8 +155,8 @@ inline double bernus::i_b_na(double V)
 
 //! Sodium potassium pump
 inline double bernus::i_na_k(double V)
-{return _g_nak*_bnf->f_nak(V)*_bnf->f_nak_a(V);}
+{return _g_nak*(_bnf.f_nak(V))*(_bnf.f_nak_a(V));}
 
 //! Sodium calcium pump
 inline double bernus::i_na_ca(double V)
-{return _g_naca*_bnf->f_naca(V);}
+{return _g_naca*(_bnf.f_naca(V));}
