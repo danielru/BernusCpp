@@ -33,6 +33,9 @@ public:
   //! The number of gating variables described by an ODE
   int static const ngates = 5;
   
+    //! Values of ODE-based gate variables
+  double gates [ngates];
+  
 private:
   
   //! Object providing all the necessary functions to compute parameter
@@ -76,32 +79,29 @@ private:
    * Member variables
    */
   
-  //! Values of ODE-based gate variables
-  double gates [ngates];
-  
   /**
    * Constants below are from Table 1 in Bernus et al.
    * TODO: Check physical units...
    */
   //TODO: Should make precision here choosable as well
-  double static const _g_na   = 16.0;
-  double static const _g_ca   = 0.064;
-  double static const _g_to   = 0.4;
-  double static const _g_k    = 0.019;
-  double static const _g_k1   = 3.9;
-  double static const _g_na_b = 0.001;
-  double static const _g_ca_b = 0.00085;
-  double static const _g_nak  = 1.3;
-  double static const _g_naca = 1.0;
+  double static constexpr _g_na   = 16.0;
+  double static constexpr _g_ca   = 0.064;
+  double static constexpr _g_to   = 0.4;
+  double static constexpr _g_k    = 0.019;
+  double static constexpr _g_k1   = 3.9;
+  double static constexpr _g_na_b = 0.001;
+  double static constexpr _g_ca_b = 0.00085;
+  double static constexpr _g_nak  = 1.3;
+  double static constexpr _g_naca = 1.0;
   
   //! Universal gas constant
-  double static const R = 0.0; //TODO: Correct value
+  double static constexpr R = 0.0; //TODO: Correct value
   
   //! Absolute temperature
-  double static const T = 0.0; //TODO: Correct value
+  double static constexpr T = 0.0; //TODO: Correct value
   
   //! Faraday constant
-  double static const Fa = 0.0; //TODO: Correct value
+  double static constexpr Fa = 0.0; //TODO: Correct value
   
   //! Extra- and inner cellular potentials (Table 1 in Bernus et al.)
   

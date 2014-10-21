@@ -78,7 +78,7 @@ class bernus_functions
   
   private:
   
-  double static const ca_i = 0.0; // TODO: Insert correct value
+  double static constexpr ca_i = 0.0; // TODO: Insert correct value
   
 };
 
