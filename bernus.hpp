@@ -1,6 +1,7 @@
 #ifndef BERNUS
 #define BERNUS
 
+#include <vector>
 #include "Iionmodel.hpp"
 #include "bernus_functions.hpp"
 
@@ -10,19 +11,12 @@ public:
   
   bernus() {
     
+    gates.resize(this->ngates);
+    
     //TODO: Somehow initialize gating variables
-    for(int i=0; i<this->ngates; i++){
-      this->gates[i] = 0.0;
+    for(size_t i=0; i<this->ngates; ++i){
+      gates[i] = 0.0;
     }
-    
-    // Initialize bernus function object
-    //this->_bnf = new bernus_functions();
-    
-    //TODO: Efficient calculation of equilibrium potentials from constants
-    this->_e_na = 0.0*bernus::R*bernus::T;
-    this->_e_ca = 0.0*bernus::R;
-    this->_e_k  = 0.0*bernus::R;
-    this->_e_to = 0.0*bernus::R;
     
   };
   
@@ -31,15 +25,15 @@ public:
   double* statevars_rhs();
   
   //! The number of gating variables described by an ODE
-  int static const ngates = 5;
+  size_t static const ngates = 5;
   
-    //! Values of ODE-based gate variables
-  double gates [ngates];
+  //! Values of ODE-based gate variables
+  std::vector<double> gates; //TODO: Find good way to represent
   
 private:
   
   //! Object providing all the necessary functions to compute parameter
-  static bernus_functions _bnf;
+  static const bernus_functions _bnf;
   
   /**
    * The total ionic current of the Bernus model is comprised of nine
@@ -106,7 +100,10 @@ private:
   //! Extra- and inner cellular potentials (Table 1 in Bernus et al.)
   
   //! Equilibrium potentials
-  double _e_na, _e_ca, _e_to, _e_k;
+  double static constexpr _e_na = bernus::R*bernus::T;
+  double static constexpr _e_ca = 0.0;
+  double static constexpr _e_to = 0.0;
+  double static constexpr _e_k  = 0.0; //TODO: Correct initializers
   
 };
 #endif // BERNUS
@@ -125,7 +122,7 @@ inline double bernus::ionforcing(double V)
  * Functions for the nine different ion currents in the Bernus model
  */
 
- //! Sodium current i_Na
+//! Sodium current i_Na
 inline double bernus::i_na(double V)
 {return _g_na*(V-_e_na);} //TODO: add ODE-based gates m, v
 

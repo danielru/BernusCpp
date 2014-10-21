@@ -192,7 +192,7 @@ inline double bernus_functions::beta_k1(double V)
 inline double bernus_functions::f_nak(double V)
 {
 double sigma = 0.0;
-return 0.0; } //TODO: Insert correct function
+return sigma; } //TODO: Insert correct function
 
 inline double bernus_functions::f_nak_a(double V)
 { return 0.0; } //TODO: Insert correct function
