@@ -10,12 +10,12 @@
  *
  */
 
-#ifndef GATE_PARAMETER
-#define GATE_PARAMETER
+#ifndef BERNUS_FUNCTIONS
+#define BERNUS_FUNCTIONS
 
 #include <cmath>
 
-class gate_parameter
+class bernus_functions
 {
   
   public:
@@ -84,17 +84,17 @@ class gate_parameter
  */
 
 //! m-gate
-inline double gate_parameter::alpha_m(double V)
+inline double bernus_functions::alpha_m(double V)
 { return 0.32*(V+47.13)/(1.0 - exp(-0.1*(V+47.13))); }
 
-inline double gate_parameter::beta_m(double V)
+inline double bernus_functions::beta_m(double V)
 { return 0.08*exp(-V/11.0); }
 
 //! v-gate
-inline double gate_parameter::v_inf(double V)
+inline double bernus_functions::v_inf(double V)
 { return 0.5*(1.0 - (tanh(7.74 + 0.12*V))); }
 
-inline double gate_parameter::tau_v(double V)
+inline double bernus_functions::tau_v(double V)
 { return 0.25 + 2.24*( 1.0-(tanh(7.74 + 0.12*V)) )/( 1.0 - tanh(0.07*(92.4+V)) ); }
 
 /**
@@ -102,24 +102,24 @@ inline double gate_parameter::tau_v(double V)
  */
 
 //! d-gate
-inline double gate_parameter::d_inf(double V)
+inline double bernus_functions::d_inf(double V)
 { return alpha_d(V)/(alpha_d(V)+beta_d(V)); }
 
-inline double gate_parameter::alpha_d(double V)
+inline double bernus_functions::alpha_d(double V)
 { return 14.98*exp(-0.5)*pow(((V-22.36)/16.68), 2.0)/(16.68*sqrt(2.0*M_PI)); }
 
-inline double gate_parameter::beta_d(double V)
+inline double bernus_functions::beta_d(double V)
 { return 0.1471 - (5.3*exp(-0.5)*pow( (V-6.27)/14.93, 2.0 ) )/(14.93*sqrt(2.0*M_PI)) ; }
 
 //! f-gate
-inline double gate_parameter::alpha_f(double V)
+inline double bernus_functions::alpha_f(double V)
 { return 6.87*1e-3/(1.0 + exp( -(6.1546-V)/6.12) ); }
 
-inline double gate_parameter::beta_f(double V)
+inline double bernus_functions::beta_f(double V)
 { return 5.75*1e-4 + (0.069*exp(-11.0*(V+9.825))+0.011)/(1.0 + exp(-0.278*(V+9.825))); }
 
 //! f_Ca-gate
-inline double gate_parameter::f_ca(double V)
+inline double bernus_functions::f_ca(double V)
 { return 1.0/(1.0 + this->Ca_i/0.0006); }
 
 /**
@@ -127,26 +127,26 @@ inline double gate_parameter::f_ca(double V)
  */
 
 //! r-gate
-inline double gate_parameter::r_inf(double V)
+inline double bernus_functions::r_inf(double V)
 { return alpha_r(V)/(alpha_r(V)+beta_r(V)); }
 
-inline double gate_parameter::alpha_r(double V)
+inline double bernus_functions::alpha_r(double V)
 { return 0.5266*exp(-0.0166*(V-42.2912))/(1.0 + exp(-0.0943*(V-42.2912))); }
 
-inline double gate_parameter::beta_r(double V)
+inline double bernus_functions::beta_r(double V)
 { return (5.186*1e-5*V+0.5149*exp(-0.1344*(V-5.0027)))/(1.0 + exp(-0.1348*(V-5.186*1e-5))); }
 
 //! to-gate
-inline double gate_parameter::alpha_to(double V)
+inline double bernus_functions::alpha_to(double V)
+{ return (5.612e-5*V+0.0721*exp(-0.173*(V+34.2531)))/(1.0 + exp(-0.1604*(V+34.0235))); } //TODO: Insert correct function
+
+inline double bernus_functions::beta_to(double V)
 { return 0.0; } //TODO: Insert correct function
 
-inline double gate_parameter::beta_to(double V)
+inline double bernus_functions::tau_to(double V)
 { return 0.0; } //TODO: Insert correct function
 
-inline double gate_parameter::tau_to(double V)
-{ return 0.0; } //TODO: Insert correct function
-
-inline double gate_parameter::to_inf(double V)
+inline double bernus_functions::to_inf(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
@@ -154,13 +154,13 @@ inline double gate_parameter::to_inf(double V)
  */
 
 //! X-gate
-inline double gate_parameter::x_inf(double V)
+inline double bernus_functions::x_inf(double V)
 { return 0.0; } //TODO: Insert correct function
 
-inline double gate_parameter::tau_x(double V)
+inline double bernus_functions::tau_x(double V)
 { return 0.0; } //TODO: Insert correct function
 
-inline double gate_parameter::tau_x_a(double V)
+inline double bernus_functions::tau_x_a(double V)
 { return 0.0; } //TODO: Insert correct function
 
 /**
@@ -194,4 +194,4 @@ inline double f_nak_a(double V)
 inline double f_naca(double V)
 { return 0.0; } //TODO: Insert correct function
 
-#endif // GATE_PARAMETER
+#endif // BERNUS_FUNCTIONS
