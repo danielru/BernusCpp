@@ -78,7 +78,18 @@ class bernus_functions
   
   private:
   
-  double static constexpr ca_i = 0.0; // TODO: Insert correct value
+  //! Constant value from Table 4 in Bernus et al.
+  //TODO: These values are cell-dependent...
+  double static constexpr p    = 1.0;
+  double static constexpr v_shift = 0.4;
+  
+  //! Constant values from Table 1 in Bernus et al.
+  double static constexpr ca_i = 0.0004;
+  double static constexpr ca_e = 2.0;
+  double static constexpr na_i = 10.0;
+  double static constexpr na_e = 138;
+  double static constexpr k_i  = 140;
+  double static constexpr k_e  = 4.0;
   
 };
 
@@ -115,17 +126,17 @@ inline double bernus_functions::d_inf(double V)
 { return alpha_d(V)/(alpha_d(V)+beta_d(V)); }
 
 inline double bernus_functions::alpha_d(double V)
-{ return 14.98*exp(-0.5)*pow(((V-22.36)/16.68), 2.0)/(16.68*sqrt(2.0*M_PI)); }
+{ return 14.98*exp(-0.5*pow( (V-22.36)/16.68, 2.0 ))/(16.68*sqrt(2.0*M_PI)); }
 
 inline double bernus_functions::beta_d(double V)
-{ return 0.1471 - (5.3*exp(-0.5)*pow( (V-6.27)/14.93, 2.0 ) )/(14.93*sqrt(2.0*M_PI)) ; }
+{ return 0.1471 - 5.3*exp(-0.5*pow( (V-6.27)/14.93, 2.0 ))/(14.93*sqrt(2.0*M_PI)) ; }
 
 //! f-gate
 inline double bernus_functions::alpha_f(double V)
 { return 6.87*1e-3/(1.0 + exp( -(6.1546-V)/6.12) ); }
 
 inline double bernus_functions::beta_f(double V)
-{ return 5.75*1e-4 + (0.069*exp(-11.0*(V+9.825))+0.011)/(1.0 + exp(-0.278*(V+9.825))); }
+{ return 5.75*1e-4 + (0.069*exp(-0.11*(V+9.825))+0.011)/(1.0 + exp(-0.278*(V+9.825))); }
 
 //! f_Ca-gate
 inline double bernus_functions::f_ca(double V)
@@ -143,20 +154,20 @@ inline double bernus_functions::alpha_r(double V)
 { return 0.5266*exp(-0.0166*(V-42.2912))/(1.0 + exp(-0.0943*(V-42.2912))); }
 
 inline double bernus_functions::beta_r(double V)
-{ return (5.186*1e-5*V+0.5149*exp(-0.1344*(V-5.0027)))/(1.0 + exp(-0.1348*(V-5.186*1e-5))); }
+{ return (5.186e-5*V+0.5149*exp(-0.1344*(V-5.0027)))/(1.0 + exp(-0.1348*(V-5.186*1e-5))); }
 
 //! to-gate
 inline double bernus_functions::alpha_to(double V)
-{ return (5.612e-5*V+0.0721*exp(-0.173*(V+34.2531)))/(1.0 + exp(-0.1604*(V+34.0235))); } //TODO: Insert correct function
+{ return (5.612e-5*V+0.0721*exp(-0.173*(V+34.2531)))/(1.0 + exp(-0.1732*(V+34.2531))); }
 
 inline double bernus_functions::beta_to(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return (1.215e-4*V + 0.0767*exp(-1.66e-9*(V+34.0235)))/(1.0 + exp(-0.1604*(V+34.0235))); }
 
 inline double bernus_functions::tau_to(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return 1.0/( bernus_functions::p*alpha_to(V) + bernus_functions::p*beta_to(V)); }
 
 inline double bernus_functions::to_inf(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return alpha_to(V - bernus_functions::v_shift)/( alpha_to(V-bernus_functions::v_shift) + beta_to(V - bernus_functions::v_shift)); }
 
 /**
  * (4) Delayed rectifier potassium current i_K (3 functions)
@@ -164,7 +175,7 @@ inline double bernus_functions::to_inf(double V)
 
 //! X-gate
 inline double bernus_functions::x_inf(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return 0.988/(1.0 + exp(-0.861-0.062*V)); }
 
 inline double bernus_functions::tau_x(double V)
 { return 0.0; } //TODO: Insert correct function
