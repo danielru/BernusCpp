@@ -5,7 +5,8 @@
  * O. Bernus, R. Wilders, C. W. Zemlin, H. Verschelde, A. V. Panfilov: 
  * "A computationally efficient electrophysiological model of human ventricular cells"; Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002.
  *
- * Note that this header contains only static variables and functions and does not depend on any state variables.
+ * Note that this header contains only static variables and functions and does not depend on any state variables. Computation of the actual ion currents,
+ * which do depend on the gating variables, is done by the Bernus class.
  *
  * Daniel Ruprecht, October 20, 2014
  *

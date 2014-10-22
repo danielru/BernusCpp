@@ -14,7 +14,7 @@ public:
   
   virtual double ionforcing(double) = 0;
   
-  virtual std::vector<double> statevars_rhs(double) = 0;
+  virtual void update_gates_dt(double) = 0;
   
 };
 
