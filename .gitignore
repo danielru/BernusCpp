@@ -1,5 +1,8 @@
 *.log
 *.aux
 *.synctex.gz
+*~
 *.*~
 *.hpp.gch
+*.out
+*.txt
