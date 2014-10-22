@@ -9,20 +9,15 @@ class bernus: public Iionmodel {
   
 public:
   
-  bernus() {
-    
-    gates.resize(this->ngates);
-    
-    //TODO: Somehow initialize gating variables
-    for(size_t i=0; i<this->ngates; ++i){
-      gates[i] = 0.0;
-    }
-    
-  };
+  //! Constructor
+  bernus();
+  
+  //! Destructor
+  ~bernus();
   
   double ionforcing(double);
   
-  double* statevars_rhs();
+  std::vector<double> statevars_rhs(double);
   
   //! The number of gating variables described by an ODE
   size_t static const ngates = 5;
@@ -106,7 +101,6 @@ private:
   double static constexpr _e_k  = 0.0; //TODO: Correct initializers
   
 };
-#endif // BERNUS
 
 /**
  * To faciliate inlining, the ion current functions are implemented here, in the header file.
@@ -118,6 +112,10 @@ inline double bernus::ionforcing(double V)
   return i_na(V)+i_ca(V)+i_to(V)+i_k(V)+i_k1(V)+i_b_ca(V)+i_b_na(V)+i_na_k(V)+i_na_ca(V);
 }
 
+std::vector<double> bernus::statevars_rhs(double V)
+{
+  return gates;
+}
 /**
  * Functions for the nine different ion currents in the Bernus model
  */
@@ -157,3 +155,5 @@ inline double bernus::i_na_k(double V)
 //! Sodium calcium pump
 inline double bernus::i_na_ca(double V)
 {return _g_naca*(_bnf.f_naca(V));}
+
+#endif // BERNUS

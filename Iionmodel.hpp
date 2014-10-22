@@ -1,6 +1,8 @@
 #ifndef IIONMODEL
 #define IIONMODEL
 
+#include <vector>
+
 class Iionmodel {
 
 public:
@@ -10,9 +12,9 @@ public:
   // destructor declared virtual to ensure proper polymorphic delete
   virtual ~Iionmodel() {};
   
-  double ionforcing(double);
+  virtual double ionforcing(double) = 0;
   
-  double* statevars_rhs();
+  virtual std::vector<double> statevars_rhs(double) = 0;
   
 };
 

@@ -1,13 +1,14 @@
 #include <cstdlib>
 #include "bernus.hpp"
-#include <omp.h>
+#include "bernus.cpp"
+#include <time.h>
 #include <iostream>
 
 int main(int narg, char** args)
 {
   int nruns = 1e8;
   bernus * bnm = new bernus();
-  double timer = omp_get_wtime();
+  clock_t timer = clock();
   double dummy = 0.0;
   
   for(int i=0; i<nruns; i++)
@@ -16,8 +17,9 @@ int main(int narg, char** args)
     dummy += bnm->ionforcing(a);
   }
 
-  timer = omp_get_wtime() - timer;
+  timer = clock() - timer;
 
-  std::cout << "Total runtime:                    " << timer << std::endl;
-  std::cout << "Average time per ionforcing call: " << timer/( (double) nruns) << std::endl;
+  float time_in_sec = ( (float) timer )/CLOCKS_PER_SEC;
+  std::cout << "Total runtime:                    " << time_in_sec << std::endl;
+  std::cout << "Average time per ionforcing call: " << time_in_sec/( (double) nruns) << std::endl;
 }
