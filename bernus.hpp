@@ -83,23 +83,6 @@ private:
   double static constexpr _g_nak  = 1.3;
   double static constexpr _g_naca = 1.0;
   
-  //! Universal gas constant
-  double static constexpr R = 0.0; //TODO: Correct value
-  
-  //! Absolute temperature
-  double static constexpr T = 0.0; //TODO: Correct value
-  
-  //! Faraday constant
-  double static constexpr Fa = 0.0; //TODO: Correct value
-  
-  //! Extra- and inner cellular potentials (Table 1 in Bernus et al.)
-  
-  //! Equilibrium potentials
-  double static constexpr _e_na = bernus::R*bernus::T;
-  double static constexpr _e_ca = 0.0;
-  double static constexpr _e_to = 0.0;
-  double static constexpr _e_k  = 0.0; //TODO: Correct initializers
-  
 };
 
 /**
@@ -122,31 +105,31 @@ std::vector<double> bernus::statevars_rhs(double V)
 
 //! Sodium current i_Na
 inline double bernus::i_na(double V)
-{return _g_na*(V-_e_na);} //TODO: add ODE-based gates m, v
+{return _g_na*(V-_bnf.e_na);} //TODO: add ODE-based gates m, v
 
 //! Calcium current i_Ca
 inline double bernus::i_ca(double V)
-{return _g_ca*(_bnf.d_inf(V))*(_bnf.f_ca(V))*(V-_e_ca);} //TODO: add ODE-based gate f
+{return _g_ca*(_bnf.d_inf(V))*(_bnf.f_ca(V))*(V-_bnf.e_ca);} //TODO: add ODE-based gate f
 
 //! Transient outward current i_to
 inline double bernus::i_to(double V)
-{return _g_k*(_bnf.r_inf(V))*(V-_e_to);} //TODO: add ODE-based gate to
+{return _g_k*(_bnf.r_inf(V))*(V-_bnf.e_to);} //TODO: add ODE-based gate to
 
 //! Delated rectifier potassium current i_K
 inline double bernus::i_k(double V)
-{return _g_k*(V-_e_k);} //TODO: add ODE gate X
+{return _g_k*(V-_bnf.e_k);} //TODO: add ODE gate X
 
 //! Inward rectifier potassium current i_K1
 inline double bernus::i_k1(double V)
-{return _g_k1*(_bnf.k1_inf(V))*(V-_e_k);}
+{return _g_k1*(_bnf.k1_inf(V))*(V-_bnf.e_k);}
 
 //! Calcium background current
 inline double bernus::i_b_ca(double V)
-{return _g_ca_b*(V-_e_ca);}
+{return _g_ca_b*(V-_bnf.e_ca);}
 
 //! Sodium background current
 inline double bernus::i_b_na(double V)
-{return _g_na_b*(V - _e_na);}
+{return _g_na_b*(V - _bnf.e_na);}
 
 //! Sodium potassium pump
 inline double bernus::i_na_k(double V)

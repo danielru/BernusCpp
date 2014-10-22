@@ -1,13 +1,11 @@
 /**
- * Header file that provides a collection of functions the
- * compute parameters of the  model for a given
- * membrane voltage potential.
+ * Header file that provides a collection of functions for the Bernus model.
+ * The constants and formulas below are all from
  *
- * All functions here are oneliners, so that the compiler
- * can inline them easily.
+ * O. Bernus, R. Wilders, C. W. Zemlin, H. Verschelde, A. V. Panfilov: 
+ * "A computationally efficient electrophysiological model of human ventricular cells"; Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002.
  *
- * For the equations implemented below and further details on the model, see
- * the original paper by Bernus et al., ""
+ * Note that this header contains only static variables and functions and does not depend on any state variables.
  *
  * Daniel Ruprecht, October 20, 2014
  *
@@ -29,8 +27,6 @@ class bernus_functions
   
   //! TODO: To later be able to easily run the whole ion channel
   //! model in single precision, introduce a ionprec typedef accuracy
-  
-  //! Note that all the functions below are static and do not depend on any state variables.
   
   //! Sodium current (eqns 14-17 in Bernus et al.)
   static double alpha_m(double);
@@ -76,14 +72,12 @@ class bernus_functions
   //! Sodium calcium pump (eq 50 in Bernus et al.)
   static double f_naca(double);
   
-  private:
-  
   //! Constant value from Table 4 in Bernus et al.
   //TODO: These values are cell-dependent...
-  double static constexpr p    = 1.0;
+  double static constexpr p       = 1.0;
   double static constexpr v_shift = 0.4;
   
-  //! Constant values from Table 1 in Bernus et al.
+  //! Extra- and inner cellular potentials (Table 1 in Bernus et al.)
   double static constexpr ca_i = 0.0004;
   double static constexpr ca_e = 2.0;
   double static constexpr na_i = 10.0;
@@ -91,11 +85,26 @@ class bernus_functions
   double static constexpr k_i  = 140;
   double static constexpr k_e  = 4.0;
   
+  //! Universal gas constant
+  double static constexpr R = 8.3144621;
+  
+  //! Absolute temperature (in Kelvin, for value in Celsius see Table 1 in Bernus et al.)
+  double static constexpr T = 37.0 + 273.15;
+  
+  //! Faraday constant
+  double static constexpr Fa = 9.64853399e4;
+  
+  //! Equilibrium potentials, p. H2306 in Bernus et al.
+  double static constexpr e_na = (R*T/Fa)*log(na_e/na_i);
+  double static constexpr e_ca = R*T/(2.0*Fa)*log(ca_e/ca_i);
+  double static constexpr e_to = (R*T/Fa)*log( (0.043*na_e + k_e)/(0.043*na_i + k_i) );
+  double static constexpr e_k  = (R*T/Fa)*log(k_e/k_i);
+  
 };
 
 /**
  * Implementation of class functions; kept in header for easier inlining.
- * See e.g. https://models.cellml.org/e/5/bernus_wilders_zemlin_verschelde_panfilov_2002.cellml/@@cellml_math
+ * See Bernus et al. 2002 or https://models.cellml.org/e/5/bernus_wilders_zemlin_verschelde_panfilov_2002.cellml/@@cellml_math
  * for the formulas.
  */
 
@@ -178,10 +187,10 @@ inline double bernus_functions::x_inf(double V)
 { return 0.988/(1.0 + exp(-0.861-0.062*V)); }
 
 inline double bernus_functions::tau_x(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return 240.0*exp(-pow( 25.5+V, 2)/156.0) + 182.0*(1.0 + tanh(0.154 + 0.0116*V)) + tau_x_a(V); }
 
 inline double bernus_functions::tau_x_a(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return 40.0*(1.0 - tanh(160.0 + 2.0*V)); }
 
 /**
  * (5) Inward rectifier potassium current i_K1 (3 functions)
@@ -189,29 +198,33 @@ inline double bernus_functions::tau_x_a(double V)
 
 //! K1-gate
 inline double bernus_functions::k1_inf(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return alpha_k1(V)/(alpha_k1(V) + beta_k1(V)); }
 
 inline double bernus_functions::alpha_k1(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return 0.1/(1.0 + exp(0.06*(V-e_k - 200.0))); }
 
 inline double bernus_functions::beta_k1(double V)
-{ return 0.0; } //TODO: Insert correct function
+{
+//NOTE: The e_k1 in Bernus et al. is a typo and should be e_k; cf. cellml.org
+return (3.0*exp(2e-4*(V-e_k+100.0)) + exp(0.1*(V-e_k-10.0)))/( 1.0 + exp(-0.5*(V - e_k)) ); }
 
 /**
  * (8) Sodium potassium pump (3 functions)
  */
 inline double bernus_functions::f_nak(double V)
 {
-double sigma = 0.0;
-return sigma; } //TODO: Insert correct function
+double sigma = 0.1428*( exp(na_e/67.3) - 1.0 );
+return 1.0/(1.0 + 0.1245*exp(-0.0037*V) + 0.0365*sigma*exp(-0.0037*V)); }
 
 inline double bernus_functions::f_nak_a(double V)
-{ return 0.0; } //TODO: Insert correct function
+{ return (1.0/(1.0 + pow( 10.0/na_i, 1.5 )))*( k_e/(k_e+1.5) ); }
 
 /**
  * (9) Sodium calcium pump i_NaCa (1 function)
  */
 inline double bernus_functions::f_naca(double V)
-{ return 0.0; } //TODO: Insert correct function
+{
+  double a = 1.0/( (pow(87.5, 3.0) + pow(na_e, 3.0)) * (1.38+ca_e) * (1.0 + 0.1*exp(-0.024*V)) );
+  return a*( pow(na_i, 3.0) * ca_e * exp(0.013*V) - pow( na_e, 3.0)*ca_i*exp(-0.024*V) ); } //TODO: Insert correct function
 
 #endif // BERNUS_FUNCTIONS
