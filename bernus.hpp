@@ -34,13 +34,13 @@ public:
   //! Time derivative of gating variables
   std::vector<double> gates_dt;
   
-private:
-  
   static const int m_gate  = 0;
   static const int v_gate  = 1;
   static const int f_gate  = 2;
   static const int to_gate = 3;
   static const int x_gate  = 4;
+  
+private:
   
   //! Object providing all the necessary functions to compute parameter
   static const bernus_functions _bnf;
@@ -87,7 +87,6 @@ private:
    * Constants below are from Table 1 in Bernus et al.
    * TODO: Check physical units...
    */
-  //TODO: Should make precision here choosable as well
   double static constexpr _g_na   = 16.0;
   double static constexpr _g_ca   = 0.064;
   double static constexpr _g_to   = 0.4;

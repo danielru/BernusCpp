@@ -3,15 +3,15 @@
  */
 
 #include "bernus.hpp"
+#include <vector>
 
 // constructor
 bernus::bernus():Iionmodel() {
-  gates.resize(this->ngates);
-  
-  //TODO: Somehow initialize gating variables
-  for(size_t i=0; i<this->ngates; ++i){
-    gates[i] = 0.0;
+  gates.resize(bernus::ngates);
+  for(size_t i=0; i<bernus::ngates; ++i){
+    gates[i] = 1.0;
   }
+  gates_dt.resize(bernus::ngates);
 }
 
 // destructor
