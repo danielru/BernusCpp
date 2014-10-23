@@ -1,5 +1,7 @@
 A C++ implementation of the Bernus ion channel model for electrocardiology.
 
-....
+1) Documentation: If doxygen is installed, run
 
-Daniel Ruprecht, October 20, 2014.
+   $doxygen Doxyfile
+
+This creates a html and a latex documentation in the doc directory.

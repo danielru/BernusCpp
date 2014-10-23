@@ -20,7 +20,6 @@
  * The bernus class defined here implements the Iionmodel interface and collects all routines
  * that involve the (time-dependent) gating variables. Static functions, that is functions that
  * do not dependent on the gating variables, are collected in bernus_functions.
- *
  * For a single cell the Bernus model (and many other membrane models) is a differential equation
  *
  * \\( v' = -I_{\rm ion}(v, w) \\\
@@ -28,7 +27,6 @@
  *
  * where \\( v \\) is the membrane potential, \\( w \\) are the state variables of the membrane model
  * (''gating variables'') and both \\( I_{\rm ion} \\) and \\( f \\) are provided by the model.
- *
  * In the Bernus model, \\( I_{\rm ion} \\) is the sum of nine different ion currents:
  * - Sodium current \\( i_{\rm Na} \\)
  * - Calcium current \\( i_{\rm Ca} \\)
@@ -41,10 +39,10 @@
  * - Sodium calcium pump \\( i_{\rm Na, Ca} \\)
  *
  * There are five state variables in the Bernus model that are modeled by ODEs:
- * - Sodium current \\( m \\)
- * - Sodium current \\( v \\)
- * - Calcium current \\( f \\)
- * - Transient outward current \\( to \\)
+ * - Sodium current gate \\( m \\)
+ * - Sodium current gate \\( v \\)
+ * - Calcium current gate \\( f \\)
+ * - Transient outward current gate \\( to \\)
  * - Delayed rectifier potassium current gate \\( x \\)
  */
 class bernus: public Iionmodel {
@@ -69,11 +67,11 @@ public:
   
   //! Computes the time-derivative \\( f(v, w) \\) of the gating variables for
   //! the current values of \\( w \\) and a given membrane potential \\( v \\).
-  //! New values are stored in member variable gates_dt
+  //! New values are stored in #gates_dt.
   //! @param[in] v Membrane potential in mV
   void update_gates_dt(double);
   
-  //! The number of gating variables described by an ODE
+  //! Number of gating variables in the Bernus model described by an ODE.
   size_t static const ngates = 5;
   
   //! Gating variables \\( w \\).
@@ -82,22 +80,23 @@ public:
   //! Time derivative \\( f(v,w) \\) of gating variables.
   std::vector<double> gates_dt;
   
-  //! Fixed indices of the different gating variables
+  //! Index of gating variable \\( m \\) in #gates
   static const int m_gate  = 0;
+  
+  //! Index of gating variable \\( v \\) in #gates
   static const int v_gate  = 1;
+  
+  //! Index of gating variable \\( f \\) in #gates
   static const int f_gate  = 2;
+  
+  //! Index of gating variable \\( to \\) in #gates
   static const int to_gate = 3;
+  
+  //! Index of gating variable \\( x \\) in #gates
   static const int x_gate  = 4;
   
-  //! Object providing all the necessary functions to compute parameter
+  //! Object providing all the necessary functions to compute parameters that do not depend on the gating variables.
   static const bernus_functions bnf;
-  
-  /*
-   * The total ionic current of the Bernus model is comprised of nine
-   * different currents. In contrast to the parameter functions, the
-   * ion current functions depend on the state of the cell, represented
-   * by the ODE-based gating variables.
-   */
   
   //! @param[in] V Membrane potential in mV
   //! @param[out] i_Na Sodium current
@@ -139,19 +138,32 @@ public:
    * Member variables
    */
   
-  /**
-   * Constants below are from Table 1 in Bernus et al.
-   * TODO: Check physical units...
-   */
-  double static constexpr _g_na   = 16.0;
-  double static constexpr _g_ca   = 0.064;
-  double static constexpr _g_to   = 0.4;
-  double static constexpr _g_k    = 0.019;
-  double static constexpr _g_k1   = 3.9;
-  double static constexpr _g_na_b = 0.001;
-  double static constexpr _g_ca_b = 0.00085;
-  double static constexpr _g_nak  = 1.3;
-  double static constexpr _g_naca = 1000.0;
+  //! Constant \\( g_{\rm Na} \\) from Table 1 in Bernus et al.
+  double static constexpr g_na   = 16.0;
+
+  //! Constant \\( g_{\rm Ca} \\) from Table 1 in Bernus et al.
+  double static constexpr g_ca   = 0.064;
+  
+  //! Constant \\( g_{\rm to} \\) from Table 1 in Bernus et al.
+  double static constexpr g_to   = 0.4;
+  
+  //! Constant \\( g_{\rm K} \\) from Table 1 in Bernus et al.
+  double static constexpr g_k    = 0.019;
+  
+  //! Constant \\( g_{\textrm{K},1} \\) from Table 1 in Bernus et al.
+  double static constexpr g_k1   = 3.9;
+  
+  //! Constant \\( g_{\rm Na,b} \\) from Table 1 in Bernus et al.
+  double static constexpr g_na_b = 0.001;
+  
+  //! Constant \\( g_{\rm Ca,b} \\) from Table 1 in Bernus et al.
+  double static constexpr g_ca_b = 0.00085;
+  
+  //! Constant \\( g_{\rm Na,K} \\) from Table 1 in Bernus et al.
+  double static constexpr g_nak  = 1.3;
+  
+  //! Constant \\( g_{\rm Na,Ca} \\) from Table 1 in Bernus et al.
+  double static constexpr g_naca = 1000.0;
   
 };
 
@@ -161,7 +173,6 @@ public:
  * the compiler was unable to actually inline the respective function.
  */
 
-// Interface functions
 inline double bernus::ionforcing(double V) {
   return i_na(V)+i_ca(V)+i_to(V)+i_k(V)+i_k1(V)+i_b_ca(V)+i_b_na(V)+i_na_k(V)+i_na_ca(V);
 }
@@ -187,38 +198,38 @@ void bernus::update_gates_dt(double V) {
 
 // Sodium current i_Na
 inline double bernus::i_na(double V){
-  return _g_na*pow(gates[m_gate], 3.0)*pow(gates[v_gate], 2.0)*(V - bnf.e_na);}
+  return g_na*pow(gates[m_gate], 3.0)*pow(gates[v_gate], 2.0)*(V - bnf.e_na);}
 
 // Calcium current i_Ca
 inline double bernus::i_ca(double V){
-  return _g_ca*(bnf.d_inf(V))*gates[f_gate]*(bnf.f_ca(V))*(V-bnf.e_ca);}
+  return g_ca*(bnf.d_inf(V))*gates[f_gate]*(bnf.f_ca(V))*(V-bnf.e_ca);}
 
 // Transient outward current i_to
 inline double bernus::i_to(double V){
-  return _g_to*(bnf.r_inf(V))*gates[to_gate]*(V-bnf.e_to);}
+  return g_to*(bnf.r_inf(V))*gates[to_gate]*(V-bnf.e_to);}
 
 // Delated rectifier potassium current i_K
 inline double bernus::i_k(double V){
-  return _g_k*pow(gates[x_gate], 2.0)*(V-bnf.e_k);}
+  return g_k*pow(gates[x_gate], 2.0)*(V-bnf.e_k);}
 
 // Inward rectifier potassium current i_K1
 inline double bernus::i_k1(double V){
-  return _g_k1*(bnf.k1_inf(V))*(V-bnf.e_k);}
+  return g_k1*(bnf.k1_inf(V))*(V-bnf.e_k);}
 
 // Calcium background current
 inline double bernus::i_b_ca(double V){
-  return _g_ca_b*(V-bnf.e_ca);}
+  return g_ca_b*(V-bnf.e_ca);}
 
 // Sodium background current
 inline double bernus::i_b_na(double V){
-  return _g_na_b*(V - bnf.e_na);}
+  return g_na_b*(V - bnf.e_na);}
 
 // Sodium potassium pump
 inline double bernus::i_na_k(double V){
-  return _g_nak*(bnf.f_nak(V))*(bnf.f_nak_a(V));}
+  return g_nak*(bnf.f_nak(V))*(bnf.f_nak_a(V));}
 
 // Sodium calcium pump
 inline double bernus::i_na_ca(double V){
-  return _g_naca*(bnf.f_naca(V));}
+  return g_naca*(bnf.f_naca(V));}
 
 #endif // BERNUS_HPP
