@@ -4,7 +4,10 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 import os
 
+# Run the executable integrate_bernus.out
 os.system("./integrate_bernus.out")
+
+# Read plain text data
 data = np.loadtxt("bernus.txt")
 t    = data[:,0]
 V0   = data[:,1]
@@ -15,6 +18,7 @@ to   = data[:,5]
 x    = data[:,6]
 Iion = data[:,7]
 
+# And plot it.
 plt.figure(figsize=(8,8))
 plt.plot(t, V0, label='V', linewidth=2.0)
 plt.xlim(t[0], t[np.size(t)-1])
