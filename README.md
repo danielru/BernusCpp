@@ -1,7 +1,13 @@
+C++ BERNUS MODEL  {#mainpage}
+================
+
 A C++ implementation of the Bernus ion channel model for electrocardiology.
 
-1) Documentation: If doxygen is installed, run
+Documentation
+-------------
 
-   $doxygen Doxyfile
+If doxygen is installed, run 
+
+$ doxygen Doxyfile
 
 This creates a html and a latex documentation in the doc directory.
