@@ -3,10 +3,11 @@
  * The constants and formulas below are all from
  *
  * O. Bernus, R. Wilders, C. W. Zemlin, H. Verschelde, A. V. Panfilov: 
- * "A computationally efficient electrophysiological model of human ventricular cells"; Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002.
+ * "A computationally efficient electrophysiological model of human ventricular cells"; 
+ * Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002.
  *
- * Note that this header contains only static variables and functions and does not depend on any state variables. Computation of the actual ion currents,
- * which do depend on the gating variables, is done by the Bernus class.
+ * Note that class has only a header which contains only static variables and functions and does not depend on any state variables. 
+ * Computation of the actual ion currents, which do depend on the gating variables, is done by the Bernus class.
  *
  * Daniel Ruprecht, October 20, 2014
  *
@@ -93,7 +94,8 @@ class bernus_functions
   //! Absolute temperature (in Kelvin, for value in Celsius see Table 1 in Bernus et al.)
   double static constexpr T = 37.0 + 273.15;
   
-  //! Faraday constant (Value comes from propag; some unit issue here, in SI units it is Fa=9.6485*1e4 C/mol
+  //! Faraday constant (Note: In SI units it is Fa=9.6485*1e4 C/mol, but parameters for Bernus model
+  //! are in mM, i.e. 1e-3 mol, therefore use scaled value given below.
   double static constexpr Fa = 96.4867;
   
   //! Equilibrium potentials, p. H2306 in Bernus et al.

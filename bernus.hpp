@@ -1,36 +1,58 @@
-/**
- * Class implementing the Bernus et al. model for ventricular cells.
- *
- * Daniel Ruprecht, October 22, 2014.
- *
- */
-#ifndef BERNUS
-#define BERNUS
-
-#define NDEBUG
-
+#ifndef BERNUS_HPP
+#define BERNUS_HPP
+//Define NDEBUG to activate runtime asserts
+//#define NDEBUG
 #include <algorithm>
 #include <vector>
 #include <assert.h>
 #include "Iionmodel.hpp"
 #include "bernus_functions.hpp"
 
+/**
+ * Class implementing the Bernus et al. model for ventricular cells:
+ *
+ * O. Bernus, R. Wilders, C. W. Zemlin, H. Verschelde, A. V. Panfilov:
+ * "A computationally efficient electrophysiological model of human ventricular cells";
+ * Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002.
+ *
+ * The bernus class defined here implements the Iionmodel interface and collects all routines
+ * that involve the (time-dependent) gating variables. Static functions, that is functions that
+ * do not dependent on the gating variables, are collected in bernus_functions.
+ *
+ * For a single cell the Bernus model (and many other membrane models) is a differential equation
+ *
+ * \\( v' = -I_{\rm ion}(v, w) \\\
+ *  w' = f(v, w) \\)
+ *
+ * where \\( v \\) is the membrane potential, \\( w \\) are the state variables of the membrane model
+ * (''gating variables'') and both \\( I_{\rm ion} \\) and \\( f \\) are provided by the model.
+ *
+ * In the Bernus model, \\( I_{\rm ion} \\) is the sum of nine different ion currents:
+ * - Sodium current \\( i_{\rm Na} \\) 
+ *
+ * Daniel Ruprecht, October 22, 2014.
+ *
+ */
 class bernus: public Iionmodel {
   
 public:
   
-  //! Constructor
+  //! Constructor; initialize gating variables to steady-state for V=-90.272
+  //! (resting potential of Bernus model)
   bernus();
   
+  //! Constructor; initialize gating variables to steady-state for
+  //! given potential V
   bernus(double);
   
   //! Destructor
   ~bernus();
   
-  void plot_equil_potentials();
-  
+  //! Evaluate all nine ion currents and return the sum
   double ionforcing(double);
   
+  //! Update the time derivatives of the gating variables in gates_dt
+  //! @param[in]
   void update_gates_dt(double);
   
   //! The number of gating variables described by an ODE
@@ -122,18 +144,24 @@ void bernus::update_gates_dt(double V) {
   // If NDEBUG is defined, make sure that all values in gates are between 0.0 and 1.0
   auto maxelem = std::max_element(std::begin(gates), std::end(gates));
   auto minelem = std::min_element(std::begin(gates), std::end(gates));
-  assert( (-0.1 <= *minelem) && (*maxelem <= 1.1) );
+  assert( (0.0 <= *minelem) && (*maxelem <= 1.0) );
 #endif
-         
+  
+  //! See e.g. https://models.physiomeproject.org/e/5/bernus_wilders_zemlin_verschelde_panfilov_2002.cellml/view
+  //! for the ODEs for the gating variables; see also Bernus et al.
   gates_dt[m_gate]  = bnf.alpha_m(V)*( 1.0 - gates[m_gate] ) - bnf.beta_m(V)*gates[m_gate];
-  gates_dt[v_gate]  = (bnf.v_inf(V)-gates[v_gate])/bnf.tau_v(V);
-  gates_dt[f_gate]  = bnf.alpha_f(V)*(1.0 - gates[f_gate]) - bnf.beta_f(V)*gates[f_gate];
+  gates_dt[f_gate]  = bnf.alpha_f(V)*( 1.0 - gates[f_gate])  - bnf.beta_f(V)*gates[f_gate];
   gates_dt[to_gate] = bnf.alpha_to(V)*(1.0 - gates[to_gate]) - bnf.beta_to(V)*gates[to_gate];
+
+  gates_dt[v_gate]  = (bnf.v_inf(V) - gates[v_gate])/bnf.tau_v(V);
   gates_dt[x_gate]  = (bnf.x_inf(V) - gates[x_gate])/bnf.tau_x(V);
 }
 
 /**
- * Functions for the nine different ion currents in the Bernus model
+ * Functions for the nine different ion currents in the Bernus model.
+ * Defined in the header with 'inline' keyword to facilitate inlining
+ * and to generate a warning if the compiler can't inline
+ * (flag -Winline for gcc)
  */
 
 //! Sodium current i_Na
@@ -172,4 +200,4 @@ inline double bernus::i_na_k(double V){
 inline double bernus::i_na_ca(double V){
   return _g_naca*(bnf.f_naca(V));}
 
-#endif // BERNUS
+#endif // BERNUS_HPP

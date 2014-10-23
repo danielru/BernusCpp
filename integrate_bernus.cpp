@@ -10,12 +10,14 @@ int main(int args, char** argv) {
   
   std::fstream output_file;
   
+  double const capacitance = 1.0;
   double V0   = -30;
-  double Tend = 50.0;
-  int nsteps  = 1e4;
+  double Tend = 500.0;
+  int nsteps  = 1e5;
   double dt   = Tend/( (double) nsteps );
   double Iion;
   clock_t timer = clock();
+  bool output = false;
   
   std::cout << "Time step (ms): " << dt << std::endl;
   
@@ -25,11 +27,12 @@ int main(int args, char** argv) {
   
   for(int i=0; i<nsteps; ++i) {
     
-    if (i % 10 == 0) {
-      // Output
+    if ( (i<100) || (i % 10 == 0) ) {
+      output = true;
       output_file << dt*( (double) i) << "    ";
       output_file << V0 << "    ";
     }
+    else{ output = false;}
     
     // Update derivative of gating variables
     brn.update_gates_dt(V0);
@@ -41,15 +44,15 @@ int main(int args, char** argv) {
     for (int j=0; j<brn.ngates; ++j) {
       brn.gates[j] += dt*brn.gates_dt[j];
       
-      if (i % 10 == 0) {
+      if (output) {
         output_file << brn.gates[j] << "    ";
       }
     }
     
     // Forward Euler update of membrane potential
-    V0 += -(1.0/1.0)*dt*Iion;
+    V0 += -(1.0/capacitance)*dt*Iion;
     
-    if (i % 10 == 0) {
+    if (output) {
       output_file << Iion << std::endl;
     }
   }

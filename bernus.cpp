@@ -42,13 +42,5 @@ bernus::bernus(double V):Iionmodel(){
 
 // destructor
 bernus::~bernus() {
-  // bla
-}
-
-void bernus::plot_equil_potentials(){
-  std::cout << "Equilibrium potentials: " << std::endl;
-  std::cout << "E_na: " << bnf.e_na << std::endl;
-  std::cout << "E_ca: " << bnf.e_ca << std::endl;
-  std::cout << "E_to: " << bnf.e_to  << std::endl;
-  std::cout << "E_k: "  << bnf.e_k  << std::endl;
+  // nothing to do
 }
