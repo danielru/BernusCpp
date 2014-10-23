@@ -23,6 +23,23 @@ bernus::bernus():Iionmodel() {
   }
 }
 
+// Initialize gating variables to steady-state values for some other potential then Vrest
+bernus::bernus(double V):Iionmodel(){
+  gates.resize(bernus::ngates);
+  
+  gates[m_gate]  = bnf.alpha_m(V)/( bnf.alpha_m(V) + bnf.beta_m(V) );
+  gates[v_gate]  = bnf.v_inf(V);
+  gates[f_gate]  = bnf.alpha_f(V)/( bnf.alpha_f(V) + bnf.beta_f(V) );
+  gates[to_gate] = bnf.alpha_to(V)/( bnf.alpha_to(V) + bnf.beta_to(V) );
+  gates[x_gate]  = bnf.x_inf(V);
+  
+  gates_dt.resize(bernus::ngates);
+  for (int i=0; i<bernus::ngates; ++i) {
+    gates_dt[i] = 0.0;
+  }
+  
+}
+
 // destructor
 bernus::~bernus() {
   // bla

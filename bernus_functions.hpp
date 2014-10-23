@@ -26,7 +26,7 @@ class bernus_functions
   bernus_functions(){};
   
   ~bernus_functions(){};
-    
+  
   //! TODO: To later be able to easily run the whole ion channel
   //! model in single precision, introduce a ionprec typedef accuracy
   
@@ -77,7 +77,7 @@ class bernus_functions
   //! Constant value from Table 4 in Bernus et al.
   //TODO: These values are cell-dependent...
   double static constexpr p       = 1.0;
-  double static constexpr v_shift = 0.4;
+  double static constexpr v_shift = 0.0;
   
   //! Extra- and inner cellular potentials (Table 1 in Bernus et al.)
   double static constexpr ca_i = 0.0004;
@@ -93,8 +93,8 @@ class bernus_functions
   //! Absolute temperature (in Kelvin, for value in Celsius see Table 1 in Bernus et al.)
   double static constexpr T = 37.0 + 273.15;
   
-  //! Faraday constant
-  double static constexpr Fa = 9.64853399e4;
+  //! Faraday constant (Value comes from propag; some unit issue here, in SI units it is Fa=9.6485*1e4 C/mol
+  double static constexpr Fa = 96.4867;
   
   //! Equilibrium potentials, p. H2306 in Bernus et al.
   double static constexpr e_na = (R*T/Fa)*log(na_e/na_i);

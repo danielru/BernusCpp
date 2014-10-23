@@ -7,7 +7,11 @@
 #ifndef BERNUS
 #define BERNUS
 
+#define NDEBUG
+
+#include <algorithm>
 #include <vector>
+#include <assert.h>
 #include "Iionmodel.hpp"
 #include "bernus_functions.hpp"
 
@@ -17,6 +21,8 @@ public:
   
   //! Constructor
   bernus();
+  
+  bernus(double);
   
   //! Destructor
   ~bernus();
@@ -97,7 +103,7 @@ public:
   double static constexpr _g_na_b = 0.001;
   double static constexpr _g_ca_b = 0.00085;
   double static constexpr _g_nak  = 1.3;
-  double static constexpr _g_naca = 1.0;
+  double static constexpr _g_naca = 1000.0;
   
 };
 
@@ -111,6 +117,14 @@ inline double bernus::ionforcing(double V) {
 }
 
 void bernus::update_gates_dt(double V) {
+
+#ifndef NDEBUG
+  // If NDEBUG is defined, make sure that all values in gates are between 0.0 and 1.0
+  auto maxelem = std::max_element(std::begin(gates), std::end(gates));
+  auto minelem = std::min_element(std::begin(gates), std::end(gates));
+  assert( (-0.1 <= *minelem) && (*maxelem <= 1.1) );
+#endif
+         
   gates_dt[m_gate]  = bnf.alpha_m(V)*( 1.0 - gates[m_gate] ) - bnf.beta_m(V)*gates[m_gate];
   gates_dt[v_gate]  = (bnf.v_inf(V)-gates[v_gate])/bnf.tau_v(V);
   gates_dt[f_gate]  = bnf.alpha_f(V)*(1.0 - gates[f_gate]) - bnf.beta_f(V)*gates[f_gate];
@@ -124,7 +138,7 @@ void bernus::update_gates_dt(double V) {
 
 //! Sodium current i_Na
 inline double bernus::i_na(double V){
-  return _g_na*pow(gates[m_gate], 3.0)*pow(gates[v_gate], 2.0)*(V-bnf.e_na);}
+  return _g_na*pow(gates[m_gate], 3.0)*pow(gates[v_gate], 2.0)*(V - bnf.e_na);}
 
 //! Calcium current i_Ca
 inline double bernus::i_ca(double V){
@@ -132,7 +146,7 @@ inline double bernus::i_ca(double V){
 
 //! Transient outward current i_to
 inline double bernus::i_to(double V){
-  return _g_k*(bnf.r_inf(V))*gates[to_gate]*(V-bnf.e_to);}
+  return _g_to*(bnf.r_inf(V))*gates[to_gate]*(V-bnf.e_to);}
 
 //! Delated rectifier potassium current i_K
 inline double bernus::i_k(double V){

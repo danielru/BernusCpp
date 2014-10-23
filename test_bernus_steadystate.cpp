@@ -19,10 +19,11 @@ int main(int args, char** argv) {
   brn.update_gates_dt(Vrest);
   double Iion = brn.ionforcing(Vrest);
   
-  for (int i=0; i<brn.ngates; ++i){
-    std::cout << brn.gates_dt[i] << std::endl;
-  }
-  
-  std::cout << "Iion: " << Iion << std::endl;
+  std::cout << "m_t:   " << brn.gates_dt[brn.m_gate] << std::endl;
+  std::cout << "v_t:   " << brn.gates_dt[brn.v_gate] << std::endl;
+  std::cout << "f_t:   " << brn.gates_dt[brn.f_gate] << std::endl;
+  std::cout << "to_t:  " << brn.gates_dt[brn.to_gate] << std::endl;
+  std::cout << "x_t:   " << brn.gates_dt[brn.x_gate] << std::endl;
+  std::cout << "Iion:  " << Iion << std::endl;
 
 }

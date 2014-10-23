@@ -4,17 +4,17 @@ import matplotlib as mpl
 from matplotlib import pyplot as plt
 import os
 
-os.system("./probe_bernus.out")
+os.system("./integrate_bernus.out")
 
 #np.loadtxt("vanderpol.txt")
 data = np.loadtxt("bernus.txt")
-t  = data[:,0]
-V0 = data[:,1]
-m  = data[:,2]
-v  = data[:,3]
-f  = data[:,4]
-to = data[:,5]
-x  = data[:,6]
+t    = data[:,0]
+V0   = data[:,1]
+m    = data[:,2]
+v    = data[:,3]
+f    = data[:,4]
+to   = data[:,5]
+x    = data[:,6]
 Iion = data[:,7]
 
 plt.figure(figsize=(8,8))
