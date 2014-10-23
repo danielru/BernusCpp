@@ -1,7 +1,3 @@
-/**
- * NOTE: Multiple small one-line functions are implemented in the header file bernus.hpp
- */
-
 #include "bernus.hpp"
 #include <vector>
 
