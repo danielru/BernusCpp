@@ -4,14 +4,14 @@
 #include <cmath>
 
 /**
- * Header file that provides a collection of functions for the Bernus model. Note that class has only a header which contains only static variables and functions which do not depend on the gating variables.
+ * Header file that provides a collection of functions for the Bernus model. Note that #bernus_functions has only a header which contains only static variables and functions which do not depend on the gating variables.
  * Computation of the actual ion currents, which do depend on the gating variables, is done by the #bernus class.
  *
  * The constants and formulas below are all from
  *
  * O. Bernus, R. Wilders, C. W. Zemlin, H. Verschelde, A. V. Panfilov:
  * "A computationally efficient electrophysiological model of human ventricular cells";
- * Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002.
+ * Am. J. Physiol. Heart Circ. Physiol. 282: H2296-H2308, 2002
  *
  * and
  *
@@ -180,12 +180,10 @@ class bernus_functions
   //! @param[out] f_naca Parameter
   static double f_naca(double);
   
-  //! Parameter \\( p \\) from Table 4 in Bernus et al.
-  //! @todo Make this value celltype-dependent
-  double static constexpr p       = 1.0;
+  //! Parameter \\( p \\) from Table 4 in Bernus et al. @todo: Make this value celltype-dependent
+  double static constexpr p = 1.0;
   
-  //! Parameter \\( v_{\\rm shift} \\) from Table 4 in Bernus et al.
-  //! @todo Make this value celltype-dependent
+  //! Parameter \\( v_{\\rm shift} \\) from Table 4 in Bernus et al. @todo: Make this value celltype-dependent
   double static constexpr v_shift = 0.0;
   
   //! Intracellular calcium concentration \\( [\\textrm{Ca}^{2+}]_i \\) from Table 1 in Bernus et al.
@@ -212,14 +210,20 @@ class bernus_functions
   //! Absolute temperature (in Kelvin, for value in Celsius see Table 1 in Bernus et al.)
   double static constexpr T = 37.0 + 273.15;
   
-  //! Faraday constant (Note: In SI units it is Fa=9.6485*1e4 C/mol, but parameters for Bernus model
-  //! are in mM, i.e. 1e-3 mol, therefore use scaled value given below.
-  double static constexpr Fa = 96.4867;
+  //! Faraday constant (scaled).
+  /**  Note: In SI units it is \\( \\textrm{Fa}=9.6485 \\times 10^4~\\textrm{C}~\\textrm{mol}^{-1} \\), but parameters for Bernus model are in \\( \\textrm{mM} \\), i.e. \\( 10^{-3} \\times \\textrm{mol} \\), therefore use scaled value.*/
+  double static constexpr Fa = 96.485;
   
-  //! Equilibrium potentials, p. H2306 in Bernus et al.
+  //! Equilibrium potential \\( E_{\\textrm Na} \\), pp. H2306 in Bernus et al.
   double static constexpr e_na = (R*T/Fa)*log(na_e/na_i);
+
+  //! Equilibrium potential \\( E_{\\textrm Ca} \\), pp. H2306 in Bernus et al.
   double static constexpr e_ca = R*T/(2.0*Fa)*log(ca_e/ca_i);
+
+  //! Equilibrium potential \\( E_{to} \\), pp. H2306 in Bernus et al.
   double static constexpr e_to = (R*T/Fa)*log( (0.043*na_e + k_e)/(0.043*na_i + k_i) );
+  
+  //! Equilibrium potential \\( E_{\\textrm K} \\), pp. H2306 in Bernus et al.
   double static constexpr e_k  = (R*T/Fa)*log(k_e/k_i);
   
 };
