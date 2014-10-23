@@ -109,7 +109,7 @@ with no gating variables.
 \end{enumerate}
 %
 %
-\subsection{Gating variables}
+\subsection{Gating variables and parameter}
 \begin{table}[ht]
 \centering
 \begin{tabular}{cc}
@@ -122,11 +122,14 @@ Delayed rectifier potassium current $X$ gate & $X$
 \end{tabular}\\[1em]
 %
 \begin{tabular}{cc}
-\multicolumn{2}{c}{\bf Diagnostic gate variables}\\
+\multicolumn{2}{c}{\bf Diagnostic parameters}\\
 Calcium current $d$ gate & $d_{\infty}$\\
 Calcium current $f_{\rm Ca}$ gate & $f_{\rm Ca}$ \\
 Transient current outward $r$ gate & $r_{\infty}$ \\
-Inward rectifier potassium current $K_1$ gate & $K_{1, \infty}$
+Inward rectifier potassium current $K_1$ gate & $K_{1, \infty}$ \\
+Sodium-potassium pump & $f_{\rm Na, K}$ \\
+Sodium-potassium pump & $f_{\rm Na, K}'$ \\
+Sodium-calcium pump & $f_{\rm Na, Ca}$
 \end{tabular}
 \end{table}
 %
@@ -159,6 +162,17 @@ with potential-dependent parameters $\alpha_{\rm to}$, $\beta_{\rm to}$.
 \end{equation}
 with potential-dependent parameters $X_{\infty}$, $\tau_{\rm X}$.
 \end{enumerate}
+A note on steady states: The time derivatives vanish for
+\begin{subequations}
+\begin{align}
+	m &= \frac{\alpha_m}{\alpha_m + \beta_m} \\
+	v &= v_{\infty} \\
+	f &= \frac{\alpha_f}{\alpha_f + \beta_f} \\
+	to &= \frac{\alpha_{\rm to}}{\alpha_{\rm to} + \beta_{\rm to}} \\
+	X &= X_{\infty}
+\end{align}
+\end{subequations}
+This makes for a good consistency check for the implementation.
 %
 %
 \subsubsection{Algebraic gating variables}

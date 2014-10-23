@@ -21,6 +21,8 @@ public:
   //! Destructor
   ~bernus();
   
+  void plot_equil_potentials();
+  
   double ionforcing(double);
   
   void update_gates_dt(double);
@@ -28,22 +30,22 @@ public:
   //! The number of gating variables described by an ODE
   size_t static const ngates = 5;
   
-  //! Values of ODE-based gate variables
-  std::vector<double> gates; //TODO: Find good way to represent
+  //! Values of ODE-based gate variables.
+  //! A simple forward Euler step would read gates[i] += dt*gates_dt[i] for example (component wise).
+  std::vector<double> gates;
   
   //! Time derivative of gating variables
   std::vector<double> gates_dt;
   
+  //! Fixed indices of the different gating variables
   static const int m_gate  = 0;
   static const int v_gate  = 1;
   static const int f_gate  = 2;
   static const int to_gate = 3;
   static const int x_gate  = 4;
   
-private:
-  
   //! Object providing all the necessary functions to compute parameter
-  static const bernus_functions _bnf;
+  static const bernus_functions bnf;
   
   /**
    * The total ionic current of the Bernus model is comprised of nine
@@ -109,11 +111,11 @@ inline double bernus::ionforcing(double V) {
 }
 
 void bernus::update_gates_dt(double V) {
-  gates_dt[m_gate]  = _bnf.alpha_m(V)*( 1.0 - gates[m_gate] ) - _bnf.beta_m(V)*gates[m_gate];
-  gates_dt[v_gate]  = (_bnf.v_inf(V)-gates[v_gate])/_bnf.tau_v(V);
-  gates_dt[f_gate]  = _bnf.alpha_f(V)*(1.0 - gates[f_gate]) - _bnf.beta_f(V)*gates[f_gate];
-  gates_dt[to_gate] = _bnf.alpha_to(V)*(1.0 - gates[to_gate]) - _bnf.beta_to(V)*gates[to_gate];
-  gates_dt[x_gate]  = (_bnf.x_inf(V) - gates[x_gate])/_bnf.tau_x(V);
+  gates_dt[m_gate]  = bnf.alpha_m(V)*( 1.0 - gates[m_gate] ) - bnf.beta_m(V)*gates[m_gate];
+  gates_dt[v_gate]  = (bnf.v_inf(V)-gates[v_gate])/bnf.tau_v(V);
+  gates_dt[f_gate]  = bnf.alpha_f(V)*(1.0 - gates[f_gate]) - bnf.beta_f(V)*gates[f_gate];
+  gates_dt[to_gate] = bnf.alpha_to(V)*(1.0 - gates[to_gate]) - bnf.beta_to(V)*gates[to_gate];
+  gates_dt[x_gate]  = (bnf.x_inf(V) - gates[x_gate])/bnf.tau_x(V);
 }
 
 /**
@@ -122,38 +124,38 @@ void bernus::update_gates_dt(double V) {
 
 //! Sodium current i_Na
 inline double bernus::i_na(double V){
-  return _g_na*pow(gates[m_gate], 3.0)*pow(gates[v_gate], 2.0)*(V-_bnf.e_na);}
+  return _g_na*pow(gates[m_gate], 3.0)*pow(gates[v_gate], 2.0)*(V-bnf.e_na);}
 
 //! Calcium current i_Ca
 inline double bernus::i_ca(double V){
-  return _g_ca*(_bnf.d_inf(V))*gates[f_gate]*(_bnf.f_ca(V))*(V-_bnf.e_ca);}
+  return _g_ca*(bnf.d_inf(V))*gates[f_gate]*(bnf.f_ca(V))*(V-bnf.e_ca);}
 
 //! Transient outward current i_to
 inline double bernus::i_to(double V){
-  return _g_k*(_bnf.r_inf(V))*gates[to_gate]*(V-_bnf.e_to);}
+  return _g_k*(bnf.r_inf(V))*gates[to_gate]*(V-bnf.e_to);}
 
 //! Delated rectifier potassium current i_K
 inline double bernus::i_k(double V){
-  return _g_k*pow(gates[x_gate], 2.0)*(V-_bnf.e_k);}
+  return _g_k*pow(gates[x_gate], 2.0)*(V-bnf.e_k);}
 
 //! Inward rectifier potassium current i_K1
 inline double bernus::i_k1(double V){
-  return _g_k1*(_bnf.k1_inf(V))*(V-_bnf.e_k);}
+  return _g_k1*(bnf.k1_inf(V))*(V-bnf.e_k);}
 
 //! Calcium background current
 inline double bernus::i_b_ca(double V){
-  return _g_ca_b*(V-_bnf.e_ca);}
+  return _g_ca_b*(V-bnf.e_ca);}
 
 //! Sodium background current
 inline double bernus::i_b_na(double V){
-  return _g_na_b*(V - _bnf.e_na);}
+  return _g_na_b*(V - bnf.e_na);}
 
 //! Sodium potassium pump
 inline double bernus::i_na_k(double V){
-  return _g_nak*(_bnf.f_nak(V))*(_bnf.f_nak_a(V));}
+  return _g_nak*(bnf.f_nak(V))*(bnf.f_nak_a(V));}
 
 //! Sodium calcium pump
 inline double bernus::i_na_ca(double V){
-  return _g_naca*(_bnf.f_naca(V));}
+  return _g_naca*(bnf.f_naca(V));}
 
 #endif // BERNUS

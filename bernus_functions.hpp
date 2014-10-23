@@ -16,6 +16,7 @@
 #define BERNUS_FUNCTIONS
 
 #include <cmath>
+#include <iostream>
 
 class bernus_functions
 {
@@ -25,7 +26,7 @@ class bernus_functions
   bernus_functions(){};
   
   ~bernus_functions(){};
-  
+    
   //! TODO: To later be able to easily run the whole ion channel
   //! model in single precision, introduce a ionprec typedef accuracy
   

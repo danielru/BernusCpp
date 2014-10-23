@@ -10,9 +10,9 @@ int main(int args, char** argv) {
   
   std::fstream output_file;
   
-  double V0 = -60;
+  double V0 = -30;
   double Tend = 500.0;
-  int nsteps = 1e4;
+  int nsteps = 5e4;
   double dt = Tend/( (double) nsteps );
   double Iion;
   clock_t timer = clock();
@@ -30,19 +30,20 @@ int main(int args, char** argv) {
     // Update derivative of gating variables
     brn.update_gates_dt(V0);
     
-    // Update gating variables
+    // Compute ionic currents
+    Iion = brn.ionforcing(V0);
+    
+    // Forward Euler update for gating variables
     for (int j=0; j<brn.ngates; ++j) {
       brn.gates[j] += dt*brn.gates_dt[j];
       output_file << brn.gates[j] << "    ";
     }
     
-    // Compute ionic currents
-    Iion = brn.ionforcing(V0);
+    // Forward Euler update of membrane potential
+    V0 += -dt*Iion;
     
     output_file << Iion << std::endl;
-    
-    // Update membrane potential
-    V0 += -dt*Iion;
+
   }
   
   output_file.close();
