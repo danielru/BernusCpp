@@ -41,7 +41,7 @@ class bernus_functions
   //! @param[out] beta_m Parameter
   static double beta_m(double);
   
-  //! Computes the sodium current parameter \\( v_{\infty} \\), eq. (16) in Bernus et al.
+  //! Computes the sodium current parameter \\( v_{\\infty} \\), eq. (16) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] v_inf Parameter
   static double v_inf(double);
@@ -53,7 +53,7 @@ class bernus_functions
   
   // Calcium current parameter
   
-  //! Computes the calcium current parameter \\( d_{\infty} \\), eq. (19) in Bernus et al.
+  //! Computes the calcium current parameter \\( d_{\\infty} \\), eq. (19) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] d_inf Parameter
   static double d_inf(double);
@@ -78,14 +78,14 @@ class bernus_functions
   //! @param[out] beta_f Parameter
   static double beta_f(double);
   
-  //! Computes the calcium current parameter \\( f_{\rm Ca} \\), eq. (24) in Bernus et al.
+  //! Computes the calcium current parameter \\( f_{Ca} \\), eq. (24) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] f_ca Parameter
   static double f_ca(double);
   
   // Transient outward current parameter
   
-  //! Computes the transient outward current parameter \\( \\r_{\infty}\\), eq. (26) in Bernus et al.
+  //! Computes the transient outward current parameter \\( r_{\\infty} \\), eq. (26) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] r_inf Parameter
   static double r_inf(double);
@@ -100,58 +100,110 @@ class bernus_functions
   //! @param[out] beta_r Parameter
   static double beta_r(double);
   
-  //! Computes the transient outward current parameter \\( \\alpha_{\rm to} \\), eq. (29) in Bernus et al.
+  //! Computes the transient outward current parameter \\( \\alpha_{to} \\), eq. (29) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] alpha_to Parameter
   static double alpha_to(double);
   
-  //! Computes the transient outward current parameter \\( \\beta_{\rm to} \\), eq. (30) in Bernus et al.
+  //! Computes the transient outward current parameter \\( \\beta_{to} \\), eq. (30) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] beta_to Parameter
   static double beta_to(double);
   
-  //! Computes the transient outward current parameter \\( \\tau_{\rm to}\\), eq. (31) in Bernus et al.
+  //! Computes the transient outward current parameter \\( \\tau_{to}\\), eq. (31) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] tau_to Parameter
   static double tau_to(double);
   
-  //! Computes the transient outward current parameter \\( \\tau_{\infty}\\), eq. (32) in Bernus et al.
+  //! Computes the transient outward current parameter \\( \\tau_{\\infty}\\), eq. (32) in Bernus et al.
   //! @param[in] V Membrane potential
   //! @param[out] tau_inf Parameter
   static double to_inf(double);
   
-  //! Delayed rectifier potassium current (eqns 34-36 in Bernus et al.)
-  static double x_inf(double);
-  static double tau_x(double);
-  static double tau_x_a(double); //TODO: These functions apparently depend also on the cell type
+  // Delayed rectifier potassium current
   
-  //! Inward rectifier potassium current (eqns 40-42 in Bernus et al.)
+  //! Computes the delayed rectifier potassium current parameter \\( x_{\\infty}\\), eq. (34) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] x_inf Parameter
+  //! @todo: Modify so that this can be varied for different cell types.
+  static double x_inf(double);
+  
+  //! Computes the delayed rectifier potassium current parameter \\( \\tau_{x}\\), eq. (35) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] tau_x Parameter
+  static double tau_x(double);
+  
+  //! Computes the delayed rectifier potassium current parameter \\( \\tau_{x, a}\\), eq. (36) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] tau_x_a Parameter
+  //! @todo: Modify so that this can be varied for different cell types.
+  static double tau_x_a(double);
+  
+  // Inward rectifier potassium current
+  
+  //! Computes the inward rectifier potassium current parameter \\( k1_{\\infty}\\), eq. (40) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] k1_inf Parameter
   static double k1_inf(double);
+
+  //! Computes the inward rectifier potassium current parameter \\( \\alpha_{k1}\\), eq. (41) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] alpha_k1 Parameter
   static double alpha_k1(double);
+  
+  //! Computes the inward rectifier potassium current parameter \\( \\beta_{k1}\\), eq. (41) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] beta_k1 Parameter
   static double beta_k1(double);
   
-  //! Calcium background current: No parameter functions needed
+  // Calcium background current: No parameter functions needed
   
-  //! Sodium background current: No parameter functions needed
+  // Sodium background current: No parameter functions needed
   
-  //! Sodium potassium pump (eqns 47, 48 in Bernus et al.; eq 49 is integrated in f_nak)
+  // Sodium potassium pump
+  
+  //! Computes the sodium potassium pump parameter \\( f_{Na, K}\\), eq. (46) in Bernus et al.
+  //! Note that the parameter \\( \\sigma \\), eq. (48) in Bernus et al., is also computed in this function.
+  //! @param[in] V Membrane potential
+  //! @param[out] f_nak Parameter
   static double f_nak(double);
+  
+  //! Computes the sodium potassium pump parameter \\( f_{Na, K}' \\), eq. (47) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] f_nak_a Parameter
   static double f_nak_a(double);
   
-  //! Sodium calcium pump (eq 50 in Bernus et al.)
+  // Sodium calcium pump
+  
+  //! Computes the sodium calcium pump parameter \\( f_{Na, Ca} \\), eq. (50) in Bernus et al.
+  //! @param[in] V Membrane potential
+  //! @param[out] f_naca Parameter
   static double f_naca(double);
   
-  //! Constant value from Table 4 in Bernus et al.
-  //TODO: These values are cell-dependent...
+  //! Parameter \\( p \\) from Table 4 in Bernus et al.
+  //! @todo Make this value celltype-dependent
   double static constexpr p       = 1.0;
+  
+  //! Parameter \\( v_{\\rm shift} \\) from Table 4 in Bernus et al.
+  //! @todo Make this value celltype-dependent
   double static constexpr v_shift = 0.0;
   
-  //! Extra- and inner cellular potentials (Table 1 in Bernus et al.)
+  //! Intracellular calcium concentration \\( [\\textrm{Ca}^{2+}]_i \\) from Table 1 in Bernus et al.
   double static constexpr ca_i = 0.0004;
+  
+  //! Extracellular calcium concentration \\( [\\textrm{Ca}^{2+}]_e \\) from Table 1 in Bernus et al.
   double static constexpr ca_e = 2.0;
+  
+  //! Intracellular sodium concentration \\( [\\textrm{Na}^{+}]_i \\) from Table 1 in Bernus et al
   double static constexpr na_i = 10.0;
+  
+  //! Extracellular sodium concentration \\( [\\textrm{Na}^{+}]_e \\) from Table 1 in Bernus et al
   double static constexpr na_e = 138;
+  
+  //! Intracellular potassium concentration \\( [\\textrm{K}^{+}]_i \\) from Table 1 in Bernus et al
   double static constexpr k_i  = 140;
+
+  //! Extracellular potassium concentration \\( [\\textrm{K}^{+}]_e \\) from Table 1 in Bernus et al
   double static constexpr k_e  = 4.0;
   
   //! Universal gas constant
