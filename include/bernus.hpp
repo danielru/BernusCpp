@@ -67,6 +67,10 @@ public:
   
   void update_gates_dt(double);
   
+  static Iionmodel * factory() {
+    return new bernus;
+  }
+  
   //! Index of gating variable \\( m \\) in #gates
   static const int m_gate  = 0;
   

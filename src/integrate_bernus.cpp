@@ -3,8 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
-#include "bernus.hpp"
-#include "bernus.cpp"
+#include "Iionmodel.hpp"
+#include "IionmodelFactory.hpp"
 
 int main(int args, char** argv) {
   
@@ -19,9 +19,9 @@ int main(int args, char** argv) {
   clock_t timer = clock();
   bool output = false;
   
-  //std::cout << "Time step (ms): " << dt << std::endl;
+  std::cout << "Time step (ms): " << dt << std::endl;
   
-  bernus brn;
+  Iionmodel * brn = IionmodelFactory::factory(IionmodelFactory::bernus);
   
   output_file.open("./bernus.txt", std::ios_base::out);
   
@@ -35,52 +35,17 @@ int main(int args, char** argv) {
     else{ output = false;}
     
     // Update derivative of gating variables
-    brn.update_gates_dt(V0);
+    brn->update_gates_dt(V0);
     
     // Compute ionic currents
-    Iion = brn.ionforcing(V0);
-    // std::cout << dt*( (double) i) << "    ";
-
-    /**
-    Iion = 0;
-    Iion += brn.i_na(V0);
-    std::cout << brn.i_na(V0) << "    ";
-    
-    Iion += brn.i_ca(V0);
-    std::cout << brn.i_ca(V0) << "    ";
-
-    Iion += brn.i_to(V0);
-    std::cout << brn.i_to(V0) << "    ";
-    
-    Iion += brn.i_k(V0);
-    std::cout << brn.i_k(V0) << "    ";
-
-    Iion += brn.i_k1(V0);
-    std::cout << brn.i_k1(V0) << "    ";
-    
-    Iion += brn.i_b_ca(V0);
-    std::cout << brn.i_b_ca(V0) << "    ";
-    
-    Iion += brn.i_b_na(V0);
-    std::cout << brn.i_b_na(V0) << "    ";
-    
-    Iion += brn.i_na_k(V0);
-    std::cout << brn.i_na_k(V0) << "    ";
-    
-    Iion += brn.i_na_ca(V0);
-    std::cout << brn.i_na_ca(V0) << "    ";
-    
-    std::cout << V0 << "    ";
-    
-    std::cout << Iion << std::endl;
-     */
+    Iion = brn->ionforcing(V0);
     
     // Forward Euler update for gating variables
-    for (int j=0; j<brn.get_ngates(); ++j) {
-      brn.gates[j] += dt*brn.gates_dt[j];
+    for (int j=0; j<brn->get_ngates(); ++j) {
+      brn->gates[j] += dt*brn->gates_dt[j];
       
       if (output) {
-        output_file << brn.gates[j] << "    ";
+        output_file << brn->gates[j] << "    ";
       }
     }
     
@@ -96,8 +61,8 @@ int main(int args, char** argv) {
   
   timer = clock() - timer;
   float time_in_sec = ( (float) timer )/CLOCKS_PER_SEC;
-  //std::cout << "Total runtime:                       " << time_in_sec << std::endl;
-  //std::cout << "Average time per ion model timestep: " << time_in_sec/( (double) nsteps) << std::endl;
+  std::cout << "Total runtime:                       " << time_in_sec << std::endl;
+  std::cout << "Average time per ion model timestep: " << time_in_sec/( (double) nsteps) << std::endl;
 
   // Print out steady-state values for gating variables:
   std::cout << std::endl;
