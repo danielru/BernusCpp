@@ -1,3 +1,6 @@
+#ifndef IIONMODELFACTORY_HPP
+#define IIONMODELFACTORY_HPP
+
 #include "Iionmodel.hpp"
 #include "bernus.hpp"
 #include "bernus.cpp"
@@ -24,3 +27,5 @@ public:
   }
   
 };
+
+#endif // IIONMODELFACTORY_HPP
