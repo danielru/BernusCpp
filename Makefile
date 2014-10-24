@@ -1,4 +1,4 @@
-CXX=g++
+CXX=clang++
 FLAGS=-Winline -O3 -std=c++11
 INC=-Iinclude -Isrc
 

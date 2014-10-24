@@ -215,19 +215,24 @@ class bernus_functions
   double static constexpr Fa = 96.485;
   
   //! Equilibrium potential \\( E_{\\textrm Na} \\), pp. H2306 in Bernus et al.
-  double static constexpr e_na = (R*T/Fa)*log(na_e/na_i);
+  double static const e_na;
 
   //! Equilibrium potential \\( E_{\\textrm Ca} \\), pp. H2306 in Bernus et al.
-  double static constexpr e_ca = R*T/(2.0*Fa)*log(ca_e/ca_i);
+  double static const e_ca;
 
   //! Equilibrium potential \\( E_{to} \\), pp. H2306 in Bernus et al.
-  double static constexpr e_to = (R*T/Fa)*log( (0.043*na_e + k_e)/(0.043*na_i + k_i) );
+  double static const e_to;
   
   //! Equilibrium potential \\( E_{\\textrm K} \\), pp. H2306 in Bernus et al.
-  double static constexpr e_k  = (R*T/Fa)*log(k_e/k_i);
+  double static const e_k;
   
 };
 
+
+double const bernus_functions::e_na = (bernus_functions::R*bernus_functions::T/bernus_functions::Fa)*log(bernus_functions::na_e/bernus_functions::na_i);
+double const bernus_functions::e_ca = (bernus_functions::R*bernus_functions::T/(2.0*bernus_functions::Fa))*log(bernus_functions::ca_e/bernus_functions::ca_i);
+double const bernus_functions::e_to = (bernus_functions::R*bernus_functions::T/bernus_functions::Fa)*log( (0.043*bernus_functions::na_e + bernus_functions::k_e)/(0.043*bernus_functions::na_i + bernus_functions::k_i) );
+double const bernus_functions::e_k  = (bernus_functions::R*bernus_functions::T/bernus_functions::Fa)*log(bernus_functions::k_e/bernus_functions::k_i);
 /*
  * Implementation of class functions; kept in header for easier inlining.
  * See Bernus et al. 2002 or https://models.cellml.org/e/5/bernus_wilders_zemlin_verschelde_panfilov_2002.cellml/@@cellml_math

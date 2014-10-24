@@ -1,7 +1,7 @@
 #ifndef BERNUS_HPP
 #define BERNUS_HPP
 //Define NDEBUG to activate runtime asserts
-//#define NDEBUG
+#define NDEBUG
 #include <algorithm>
 #include <vector>
 #include <assert.h>
