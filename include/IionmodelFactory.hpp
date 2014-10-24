@@ -14,6 +14,8 @@ public:
   static const int bernus = 1;
   
   //! @todo docu
+  //! @param[in] choice Integer indicating the model to use.
+  //! @param[out] Iionmodel* A pointer to an object of the subclass implementing the selected model.
   static Iionmodel * factory(int choice) {
     if (choice == IionmodelFactory::bernus)
       return bernus::factory();

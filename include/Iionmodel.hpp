@@ -3,6 +3,7 @@
 
 #include <vector>
 #include <cstdlib>
+#include <stdexcept>
 
 /**
  * Defines an interface for membrane models. The mono domain equation for electrocardiology is a reaction
@@ -41,14 +42,7 @@ public:
   //! @param[in] v Membrane potential in mV
   //! @param[out] Iion Ion current
   virtual double ionforcing(double v) = 0;
-  
-  //! Static factory function that instantiates an object of type bernus and returns a pointer to it. Each class implementing this interface has to override this function.
-  //! @param[out] Iionmodel* A pointer to an object of the class implementing the interface.
-  static Iionmodel * factory() {
-    // The interface itself is abstract, this function is here only for documentation purposes.
-    return nullptr;
-  }
-  
+    
   //! Returns the number of ODE-based gating variables of a specific membrane model
   virtual int get_ngates() = 0;
 

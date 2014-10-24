@@ -67,6 +67,8 @@ public:
   
   void update_gates_dt(double);
   
+  //! Static factory function that instantiates a #bernus object and returns a pointer. Called by the #IionmodelFactory class.
+  //! @param[out] Iionmodel* A pointer to an object of type #bernus.
   static Iionmodel * factory() {
     return new bernus;
   }
