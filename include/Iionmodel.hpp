@@ -40,6 +40,9 @@ public:
   //! @param[in] v Membrane potential in mV
   //! @param[out] Iion Ion current
   virtual double ionforcing(double v) = 0;
+  
+  //! Returns the number of ODE-based gating variables of a specific membrane model
+  virtual int get_ngates() = 0;
 
   //! Computes the time-derivative \\( f(v, w) \\) of the gating variables for
   //! the current values of \\( w \\) and a given membrane potential \\( v \\).

@@ -63,10 +63,9 @@ public:
   
   double ionforcing(double);
   
-  void update_gates_dt(double);
+  int get_ngates();
   
-  //! Number of gating variables in the Bernus model described by an ODE.
-  size_t static const ngates = 5;
+  void update_gates_dt(double);
   
   //! Index of gating variable \\( m \\) in #gates
   static const int m_gate  = 0;
@@ -153,6 +152,11 @@ public:
   //! Constant \\( g_{\rm Na,Ca} \\) from Table 1 in Bernus et al.
   double static constexpr g_naca = 1000.0;
   
+private:
+  
+  //! Number of gating variables in the Bernus model described by an ODE.
+  size_t static const ngates = 5;
+  
 };
 
 /*
@@ -163,6 +167,10 @@ public:
 
 inline double bernus::ionforcing(double V) {
   return i_na(V)+i_ca(V)+i_to(V)+i_k(V)+i_k1(V)+i_b_ca(V)+i_b_na(V)+i_na_k(V)+i_na_ca(V);
+}
+
+inline int bernus::get_ngates() {
+  return bernus::ngates;
 }
 
 void bernus::update_gates_dt(double V) {

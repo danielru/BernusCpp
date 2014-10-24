@@ -76,7 +76,7 @@ int main(int args, char** argv) {
      */
     
     // Forward Euler update for gating variables
-    for (int j=0; j<brn.ngates; ++j) {
+    for (int j=0; j<brn.get_ngates(); ++j) {
       brn.gates[j] += dt*brn.gates_dt[j];
       
       if (output) {
