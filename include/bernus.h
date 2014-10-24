@@ -5,8 +5,8 @@
 #include <algorithm>
 #include <vector>
 #include <assert.h>
-#include "Iionmodel.hpp"
-#include "bernus_functions.hpp"
+#include "Iionmodel.h"
+#include "bernus_functions.h"
 
 /**
  * Class implementing the Bernus et al. model for ventricular cells:

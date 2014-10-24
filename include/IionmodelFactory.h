@@ -1,8 +1,8 @@
 #ifndef IIONMODELFACTORY_HPP
 #define IIONMODELFACTORY_HPP
 
-#include "Iionmodel.hpp"
-#include "bernus.hpp"
+#include "Iionmodel.h"
+#include "bernus.h"
 #include <stdexcept>
 
 /**

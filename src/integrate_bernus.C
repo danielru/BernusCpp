@@ -3,8 +3,8 @@
 #include <iostream>
 #include <fstream>
 #include <time.h>
-#include "Iionmodel.hpp"
-#include "IionmodelFactory.hpp"
+#include "Iionmodel.h"
+#include "IionmodelFactory.h"
 
 int main(int args, char** argv) {
   

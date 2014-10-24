@@ -4,14 +4,14 @@ INC=-Iinclude
 
 all: integrate_bernus.out
 
-build/bernus_functions.o: src/bernus_functions.cpp include/bernus_functions.hpp
-	$(CXX) $(FLAGS) -c src/bernus_functions.cpp -o build/bernus_functions.o $(INC)
+build/bernus_functions.o: src/bernus_functions.C include/bernus_functions.h
+	$(CXX) $(FLAGS) -c src/bernus_functions.C -o build/bernus_functions.o $(INC)
 
-build/bernus.o: src/bernus.cpp include/bernus.hpp
-	$(CXX) $(FLAGS) -c src/bernus.cpp -o build/bernus.o $(INC)
+build/bernus.o: src/bernus.C include/bernus.h
+	$(CXX) $(FLAGS) -c src/bernus.C -o build/bernus.o $(INC)
 
-integrate_bernus.out: build/bernus_functions.o build/bernus.o include/Iionmodel.hpp include/IionmodelFactory.hpp
-	$(CXX) $(FLAGS) build/bernus_functions.o build/bernus.o src/integrate_bernus.cpp -o integrate_bernus.out $(INC)
+integrate_bernus.out: build/bernus_functions.o build/bernus.o include/Iionmodel.h include/IionmodelFactory.h
+	$(CXX) $(FLAGS) build/bernus_functions.o build/bernus.o src/integrate_bernus.C -o integrate_bernus.out $(INC)
 
 
 clean:
