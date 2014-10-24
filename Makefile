@@ -4,7 +4,7 @@ INC=-Iinclude
 
 all: integrate_bernus.out
 
-integrate_bernus.out: src/integrate_bernus.cpp  src/bernus.cpp include/bernus.hpp include/bernus_functions.hpp
+integrate_bernus.out: src/integrate_bernus.cpp  src/bernus.cpp include/bernus.hpp include/bernus_functions.hpp include/Iionmodel.hpp
 	$(CXX) $(FLAGS) src/integrate_bernus.cpp -o integrate_bernus.out $(INC)
 
 
