@@ -3,7 +3,6 @@
 
 #include "Iionmodel.hpp"
 #include "bernus.hpp"
-#include "bernus.cpp"
 #include <stdexcept>
 
 /**
