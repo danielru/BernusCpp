@@ -1,5 +1,5 @@
 CXX=clang++
-FLAGS=-Winline -O3 -std=c++11
+FLAGS=-Winline -O3 -std=c++11 -Wfatal-errors -g
 INC=-Iinclude
 
 all: integrate_bernus.out
