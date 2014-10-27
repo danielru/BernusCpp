@@ -33,7 +33,7 @@ class Iionmodel {
 
 public:
 
-  Iionmodel() {};
+  Iionmodel(std::vector<double>* gates) : gates(gates){};
   
   // destructor declared virtual to ensure proper polymorphic delete
   virtual ~Iionmodel() {};
@@ -53,7 +53,7 @@ public:
   virtual void update_gates_dt(double v) = 0;
   
   //! Gating variables \\( w \\).
-  std::vector<double> gates;
+  std::vector<double> * gates;
   
   //! Time derivative \\( f(v,w) \\) of gating variables.
   std::vector<double> gates_dt;
