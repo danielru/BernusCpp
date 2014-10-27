@@ -2,10 +2,13 @@
 #include <vector>
 
 // default constructor: initializes all gates to their steady-state value for V = -90.272 mV
-bernus::bernus(std::vector<double>* gates):Iionmodel(gates) {
+bernus::bernus(std::vector<double>* gates, std::vector<double>* gates_dt):Iionmodel(gates, gates_dt) {
 
+  // Resize both vectors to number of gating variables in the Bernus model.
   (*this->gates).resize(bernus::ngates);
+  (*this->gates_dt).resize(bernus::ngates);
 
+  // Resting potential of Bernus model
   double const Vrest = -90.272;
   
   (*this->gates)[m_gate]  = bnf.alpha_m(Vrest)/( bnf.alpha_m(Vrest) + bnf.beta_m(Vrest) );
@@ -14,13 +17,9 @@ bernus::bernus(std::vector<double>* gates):Iionmodel(gates) {
   (*this->gates)[to_gate] = bnf.alpha_to(Vrest)/( bnf.alpha_to(Vrest) + bnf.beta_to(Vrest) );
   (*this->gates)[x_gate]  = bnf.x_inf(Vrest);
   
-  gates_dt.resize(bernus::ngates);
-  for (int i=0; i<bernus::ngates; ++i) {
-    gates_dt[i] = 0.0;
-  }
 }
 
 // destructor
 bernus::~bernus() {
-  // nothing to do
+  // nothing to do, array pointers have to be deleted externally.
 }

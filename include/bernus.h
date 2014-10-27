@@ -51,7 +51,7 @@ public:
   
   //! Initialize gating variables to their steady-state values
   //! for the Bernus model resting potential \\( V=-90.272 mV \\)
-  bernus(std::vector<double>* gates);
+  bernus(std::vector<double>* gates, std::vector<double>* gates_dt);
   
   //! Destructor
   ~bernus();
@@ -64,8 +64,8 @@ public:
   
   //! Static factory function that instantiates a #bernus object and returns a pointer. Called by the #IionmodelFactory class.
   //! @param[out] Iionmodel* A pointer to an object of type #bernus.
-  static Iionmodel * factory(std::vector<double>* gates) {
-    return new bernus(gates);
+  static Iionmodel * factory(std::vector<double>* gates, std::vector<double>* gates_dt) {
+    return new bernus(gates, gates_dt);
   }
   
   //! Index of gating variable \\( m \\) in #gates
@@ -178,12 +178,12 @@ inline void bernus::update_gates_dt(double V) {
   
   // See e.g. https://models.physiomeproject.org/e/5/bernus_wilders_zemlin_verschelde_panfilov_2002.cellml/view
   // for the ODEs for the gating variables; see also Bernus et al.
-  gates_dt[m_gate]  = bnf.alpha_m(V)*( 1.0 - (*this->gates)[m_gate])  - bnf.beta_m(V)*(*this->gates)[m_gate];
-  gates_dt[f_gate]  = bnf.alpha_f(V)*( 1.0 - (*this->gates)[f_gate])  - bnf.beta_f(V)*(*this->gates)[f_gate];
-  gates_dt[to_gate] = bnf.alpha_to(V)*(1.0 - (*this->gates)[to_gate]) - bnf.beta_to(V)*(*this->gates)[to_gate];
+  (*this->gates_dt)[m_gate]  = bnf.alpha_m(V)*( 1.0 - (*this->gates)[m_gate])  - bnf.beta_m(V)*(*this->gates)[m_gate];
+  (*this->gates_dt)[f_gate]  = bnf.alpha_f(V)*( 1.0 - (*this->gates)[f_gate])  - bnf.beta_f(V)*(*this->gates)[f_gate];
+  (*this->gates_dt)[to_gate] = bnf.alpha_to(V)*(1.0 - (*this->gates)[to_gate]) - bnf.beta_to(V)*(*this->gates)[to_gate];
 
-  gates_dt[v_gate]  = (bnf.v_inf(V) - (*this->gates)[v_gate])/bnf.tau_v(V);
-  gates_dt[x_gate]  = (bnf.x_inf(V) - (*this->gates)[x_gate])/bnf.tau_x(V);
+  (*this->gates_dt)[v_gate]  = (bnf.v_inf(V) - (*this->gates)[v_gate])/bnf.tau_v(V);
+  (*this->gates_dt)[x_gate]  = (bnf.x_inf(V) - (*this->gates)[x_gate])/bnf.tau_x(V);
 }
 
 // Sodium current i_Na
