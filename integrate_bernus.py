@@ -28,6 +28,15 @@ plt.ylabel('Potential [mV]', fontsize=14)
 plt.show()
 #plt.savefig('potential.eps')
 
+# And plot it.
+plt.figure(figsize=(8,8))
+plt.plot(t, Iion, label='Iion', linewidth=2.0)
+plt.xlim(t[0], t[np.size(t)-1])
+plt.xlabel('Time [ms]', fontsize=14)
+plt.ylabel('Current [XX]', fontsize=14)
+plt.show()
+#plt.savefig('potential.eps')
+
 plt.figure(figsize=(8,8))
 plt.plot(t, m, label='m', linewidth=2.0)
 plt.plot(t, v, label='v', linewidth=2.0)
