@@ -24,7 +24,7 @@ int main(int args, char** argv) {
   std::vector<double> gates;
   std::vector<double> gates_dt;
   
-  Iionmodel * brn = IionmodelFactory::factory(IionmodelFactory::bernus, &gates, &gates_dt);
+  Iionmodel * brn = IionmodelFactory::factory(IionmodelFactory::BERNUS, &gates, &gates_dt);
   
   output_file.open("./bernus.txt", std::ios_base::out);
   
