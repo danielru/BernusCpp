@@ -13,7 +13,7 @@ int main(int args, char** argv) {
   double const capacitance = 1.0;
   double V0   = -60;
   double Tend = 500.0;
-  int nsteps  = 1e7;
+  int nsteps  = 1e4;
   double dt   = Tend/( (double) nsteps );
   double Iion;
   clock_t timer = clock();
@@ -30,25 +30,21 @@ int main(int args, char** argv) {
   
   for(int i=0; i<nsteps; ++i) {
     
-    if ( (i<100) || (i % 1000 == 0) ) {
+    if ( (i<100) || (i % 1 == 0) ) {
       output = true;
       output_file << dt*( (double) i) << "    ";
       output_file << V0 << "    ";
     }
     else{ output = false;}
     
-    // Update derivative of gating variables
-    brn->update_gates_dt(V0);
-    
     // Compute ionic currents
     Iion = brn->ionforcing(V0);
     
+    // Rush-Larsen update of gates
+    brn->rush_larsen_step(V0, dt);
     
-    // Forward Euler update for gating variables
-    for (int j=0; j<brn->get_ngates(); ++j) {
-      (*brn->gates)[j] += dt*(*brn->gates_dt)[j];
-      
-      if (output) {
+    if (output) {
+      for (int j=0; j<brn->get_ngates(); ++j) {
         output_file << (*brn->gates)[j] << "    ";
       }
     }
