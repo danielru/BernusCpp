@@ -6,14 +6,16 @@
 #include "Iionmodel.h"
 #include "IionmodelFactory.h"
 
+#include "bernus.h"
+
 int main(int args, char** argv) {
   
   std::fstream output_file;
 
   double const capacitance = 1.0;
-  double V0   = -60;
-  double Tend = 500.0;
-  int nsteps  = 1e4;
+  double V0   = -20;
+  double Tend = 3;
+  int nsteps  = 500;
   double dt   = Tend/( (double) nsteps );
   double Iion;
   clock_t timer = clock();
@@ -26,11 +28,14 @@ int main(int args, char** argv) {
   
   Iionmodel * brn = IionmodelFactory::factory(IionmodelFactory::BERNUS, &gates, &gates_dt);
   
+  // For testing, want to also access functions in Bernus which are not exposed by the interface
+  bernus * bbb = (bernus*) brn;
+  
   output_file.open("./bernus.txt", std::ios_base::out);
   
   for(int i=0; i<nsteps; ++i) {
     
-    if ( (i<100) || (i % 1 == 0) ) {
+    if ( (i<250) || (i % 1 == 0) ) {
       output = true;
       output_file << dt*( (double) i) << "    ";
       output_file << V0 << "    ";
@@ -53,7 +58,9 @@ int main(int args, char** argv) {
     V0 += -(1.0/capacitance)*dt*Iion;
     
     if (output) {
-      output_file << Iion << std::endl;
+      //output_file << Iion << std::endl;
+      
+      output_file << (bbb->i_na)(V0) << std::endl;
     }
   }
   

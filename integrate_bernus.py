@@ -33,7 +33,7 @@ plt.figure(figsize=(8,8))
 plt.plot(t, Iion, label='Iion', linewidth=2.0)
 plt.xlim(t[0], t[np.size(t)-1])
 plt.xlabel('Time [ms]', fontsize=14)
-plt.ylabel('Current [XX]', fontsize=14)
+plt.ylabel('Current [pA/pF]', fontsize=14)
 plt.show()
 #plt.savefig('potential.eps')
 
