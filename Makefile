@@ -10,7 +10,7 @@ build/bernus_functions.o: src/bernus_functions.C include/bernus_functions.h
 build/bernus.o: src/bernus.C include/bernus.h
 	$(CXX) $(FLAGS) -c src/bernus.C -o build/bernus.o $(INC)
 
-integrate_bernus.out: build/bernus_functions.o build/bernus.o include/Iionmodel.h include/IionmodelFactory.h
+integrate_bernus.out: build/bernus_functions.o build/bernus.o include/Iionmodel.h include/IionmodelFactory.h src/integrate_bernus.C
 	$(CXX) $(FLAGS) build/bernus_functions.o build/bernus.o src/integrate_bernus.C -o integrate_bernus.out $(INC)
 
 
