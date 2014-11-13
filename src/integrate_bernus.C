@@ -6,6 +6,7 @@
 #include "Iionmodel.h"
 #include "IionmodelFactory.h"
 
+// For testing
 #include "bernus.h"
 
 int main(int args, char** argv) {
@@ -20,6 +21,7 @@ int main(int args, char** argv) {
   double Iion;
   clock_t timer = clock();
   bool output = false;
+  bool repol = false;
   
   std::cout << "Time step (ms): " << dt << std::endl;
   
@@ -52,6 +54,11 @@ int main(int args, char** argv) {
       for (int j=0; j<brn->get_ngates(); ++j) {
         output_file << (*brn->gates)[j] << "    ";
       }
+    }
+    
+    if ( (i*dt>25.0) && !repol && (brn->gates[bernus::m_gate]<0.98)) {
+      std::cout << "Repolarized at t = " << i*dt << std::endl;
+      repol = true;
     }
     
     // Forward Euler update of membrane potential
