@@ -14,9 +14,9 @@ int main(int args, char** argv) {
   std::fstream output_file;
 
   double const capacitance = 1.0;
-  double V0   = -20;
-  double Tend = 3;
-  int nsteps  = 500;
+  double V0   = -60;
+  double Tend = 500;
+  int nsteps  = 1e4;
   double dt   = Tend/( (double) nsteps );
   double Iion;
   clock_t timer = clock();
@@ -56,7 +56,7 @@ int main(int args, char** argv) {
       }
     }
     
-    if ( (i*dt>25.0) && !repol && (brn->gates[bernus::m_gate]<0.98)) {
+    if ( (i*dt>25.0) && !repol && ((*brn->gates)[bernus::m_gate]<0.98)) {
       std::cout << "Repolarized at t = " << i*dt << std::endl;
       repol = true;
     }
