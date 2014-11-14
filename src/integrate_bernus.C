@@ -26,9 +26,11 @@ int main(int args, char** argv) {
   std::cout << "Time step (ms): " << dt << std::endl;
   
   std::vector<double> gates;
-  std::vector<double> gates_dt;
   
-  Iionmodel * brn = IionmodelFactory::factory(IionmodelFactory::BERNUS, &gates, &gates_dt);
+  Iionmodel * brn = IionmodelFactory::factory(IionmodelFactory::BERNUS);
+  
+  brn->initialize(&gates);
+  
   
   // For testing, want to also access functions in Bernus which are not exposed by the interface
   bernus * bbb = (bernus*) brn;
@@ -45,19 +47,20 @@ int main(int args, char** argv) {
     else{ output = false;}
     
     // Compute ionic currents
-    Iion = brn->ionforcing(V0);
+    Iion = brn->ionforcing(V0, &gates);
     
     // Rush-Larsen update of gates
-    brn->rush_larsen_step(V0, dt);
+    brn->rush_larsen_step(V0, dt, &gates);
     
     if (output) {
       for (int j=0; j<brn->get_ngates(); ++j) {
-        output_file << (*brn->gates)[j] << "    ";
+        output_file << gates[j] << "    ";
       }
     }
     
-    if ( (i*dt>25.0) && !repol && ((*brn->gates)[bernus::m_gate]<0.98)) {
+    if ( (i*dt>25.0) && !repol && (gates[bernus::m_gate]<0.98)) {
       std::cout << "Repolarized at t = " << i*dt << std::endl;
+      std::cout << "Potential at this time = " << V0 << std::endl;
       repol = true;
     }
     
@@ -67,7 +70,7 @@ int main(int args, char** argv) {
     if (output) {
       //output_file << Iion << std::endl;
       
-      output_file << (bbb->i_na)(V0) << std::endl;
+      output_file << (bbb->i_na)(V0,&gates) << std::endl;
     }
   }
   
