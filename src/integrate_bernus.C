@@ -16,13 +16,16 @@ int main(int args, char** argv) {
   double const capacitance = 1.0;
   double const Vrest = -90.272;
   double const Vmax = 0;
-  double const eps0 = 1;
-  double const kTa  = 47.9;
+  double const eps_recovery    = 0.01;
+  double const eps_development = 0.04;
+  double const kTa  = 1;
+  double const gamma = 0.5;           // Newmark integrator parameter
+
   double const Vpace = 30.272;
   double V0;
   double const Tend = 500;
   int const nsteps  = 1e4;
-  int const npacing = 3;
+  int const npacing = 2;
   double const dt   = Tend/( (double) nsteps );
   double Iion;
   double Ta = 0;
@@ -74,18 +77,23 @@ int main(int args, char** argv) {
 		  repol = true;
 		}
 	
+	    double const Vo = V0;
 		// Forward Euler update of membrane potential
 		V0 += -(1.0/capacitance)*dt*Iion;
 	
 		// normalized potential
-		double const Vnorm = (V0 - Vrest)/(Vmax-Vrest);
-		// Forward Euler update of active tension
-		Ta  = dt*(Vnorm > 0.05 ? eps0 : 10*eps0)*(kTa*Vnorm - Ta);
+		double const V0n = (V0 - Vrest)/(Vmax-Vrest);
+		double const Von = (Vo - Vrest)/(Vmax-Vrest);
+		// shape function
+		auto eps = [&] (double V) { return (V < 0.05 ? eps_development : eps_recovery); };
+		// Extended mean value theorem / Newmark integrator
+		Ta =    (dt*((1-gamma)*eps(Von)*(kTa*Von-Ta)+gamma*eps(V0n)*kTa*V0n)+Ta)
+		      / (1+dt*gamma*eps(V0n));
 	
 		if (output) {
 		  //output_file << Iion << std::endl;
 	  
-		  output_file << (bbb->i_na)(V0,&gates) << "   " << Ta << "   " << Vnorm << std::endl;
+		  output_file << (bbb->i_na)(V0,&gates) << "   " << Ta << "   " << V0n << std::endl;
 		}
 	  }
   }

@@ -30,7 +30,7 @@ plt.ylabel('Potential [mV]', fontsize=14)
 #plt.savefig('potential.eps')
 
 plt.figure(figsize=(8,8))
-plt.plot(t, Ta, label='Ta', linewidth=2.0)
+plt.plot(t, Ta/max(Ta), label='Ta', linewidth=2.0)
 plt.plot(t, Vn, label='Vnorm', linewidth=2.0)
 plt.xlim(t[0], t[np.size(t)-1])
 #plt.ylim((-100, 60))
