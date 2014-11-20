@@ -17,6 +17,8 @@ f    = data[:,4]
 to   = data[:,5]
 x    = data[:,6]
 Iion = data[:,7]
+Ta   = data[:,8]
+Vn   = data[:,9]
 
 # And plot it.
 plt.figure(figsize=(8,8))
@@ -25,8 +27,17 @@ plt.xlim(t[0], t[np.size(t)-1])
 #plt.ylim((-100, 60))
 plt.xlabel('Time [ms]', fontsize=14)
 plt.ylabel('Potential [mV]', fontsize=14)
-plt.show()
 #plt.savefig('potential.eps')
+
+plt.figure(figsize=(8,8))
+plt.plot(t, Ta, label='Ta', linewidth=2.0)
+plt.plot(t, Vn, label='Vnorm', linewidth=2.0)
+plt.xlim(t[0], t[np.size(t)-1])
+#plt.ylim((-100, 60))
+plt.xlabel('Time [ms]', fontsize=14)
+plt.ylabel('a.u.', fontsize=14)
+plt.legend()
+#plt.savefig('tension.eps')
 
 # And plot it.
 plt.figure(figsize=(8,8))
@@ -34,7 +45,6 @@ plt.plot(t, Iion, label='Iion', linewidth=2.0)
 plt.xlim(t[0], t[np.size(t)-1])
 plt.xlabel('Time [ms]', fontsize=14)
 plt.ylabel('Current [pA/pF]', fontsize=14)
-plt.show()
 #plt.savefig('potential.eps')
 
 plt.figure(figsize=(8,8))
@@ -43,7 +53,6 @@ plt.xlim(t[0], t[np.size(t)-1])
 #plt.ylim((-100, 60))
 plt.xlabel('Time [ms]', fontsize=14)
 plt.ylabel('Ion current [pA/pF = mV/ms]', fontsize=14)
-plt.show()
 #plt.savefig('potential.eps')
 
 plt.figure(figsize=(8,8))
@@ -56,5 +65,6 @@ plt.legend()
 plt.xlim(t[0], t[np.size(t)-1])
 plt.xlabel('Time [ms]', fontsize=14)
 plt.ylabel('Gate variable', fontsize=14)
-plt.show()
 #plt.savefig('gates.eps')
+
+plt.show()

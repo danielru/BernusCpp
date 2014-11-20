@@ -14,11 +14,18 @@ int main(int args, char** argv) {
   std::fstream output_file;
 
   double const capacitance = 1.0;
-  double V0   = -60;
-  double Tend = 500;
-  int nsteps  = 1e4;
-  double dt   = Tend/( (double) nsteps );
+  double const Vrest = -90.272;
+  double const Vmax = 0;
+  double const eps0 = 1;
+  double const kTa  = 47.9;
+  double const Vpace = 30.272;
+  double V0;
+  double const Tend = 500;
+  int const nsteps  = 1e4;
+  int const npacing = 3;
+  double const dt   = Tend/( (double) nsteps );
   double Iion;
+  double Ta = 0;
   clock_t timer = clock();
   bool output = false;
   bool repol = false;
@@ -37,41 +44,50 @@ int main(int args, char** argv) {
   
   output_file.open("./bernus.txt", std::ios_base::out);
   
-  for(int i=0; i<nsteps; ++i) {
-    
-    if ( (i<250) || (i % 1 == 0) ) {
-      output = true;
-      output_file << dt*( (double) i) << "    ";
-      output_file << V0 << "    ";
-    }
-    else{ output = false;}
-    
-    // Compute ionic currents
-    Iion = brn->ionforcing(V0, &gates);
-    
-    // Rush-Larsen update of gates
-    brn->rush_larsen_step(V0, dt, &gates);
-    
-    if (output) {
-      for (int j=0; j<brn->get_ngates(); ++j) {
-        output_file << gates[j] << "    ";
-      }
-    }
-    
-    if ( (i*dt>25.0) && !repol && (gates[bernus::m_gate]<0.98)) {
-      std::cout << "Repolarized at t = " << i*dt << std::endl;
-      std::cout << "Potential at this time = " << V0 << std::endl;
-      repol = true;
-    }
-    
-    // Forward Euler update of membrane potential
-    V0 += -(1.0/capacitance)*dt*Iion;
-    
-    if (output) {
-      //output_file << Iion << std::endl;
+  for(int npace=0; npace<npacing; npace++) {
+      V0 = Vrest + Vpace;
       
-      output_file << (bbb->i_na)(V0,&gates) << std::endl;
-    }
+	  for(int i=0; i<nsteps; ++i) {
+	
+		if ( (i<250) || (i % 1 == 0) ) {
+		  output = true;
+		  output_file << dt*( (double) i)+npace*Tend << "    ";
+		  output_file << V0 << "    ";
+		}
+		else{ output = false;}
+	
+		// Compute ionic currents
+		Iion = brn->ionforcing(V0, &gates);
+	
+		// Rush-Larsen update of gates
+		brn->rush_larsen_step(V0, dt, &gates);
+	
+		if (output) {
+		  for (int j=0; j<brn->get_ngates(); ++j) {
+			output_file << gates[j] << "    ";
+		  }
+		}
+	
+		if ( (i*dt>25.0) && !repol && (gates[bernus::m_gate]<0.98)) {
+		  std::cout << "Repolarized at t = " << i*dt << std::endl;
+		  std::cout << "Potential at this time = " << V0 << std::endl;
+		  repol = true;
+		}
+	
+		// Forward Euler update of membrane potential
+		V0 += -(1.0/capacitance)*dt*Iion;
+	
+		// normalized potential
+		double const Vnorm = (V0 - Vrest)/(Vmax-Vrest);
+		// Forward Euler update of active tension
+		Ta  = dt*(Vnorm > 0.05 ? eps0 : 10*eps0)*(kTa*Vnorm - Ta);
+	
+		if (output) {
+		  //output_file << Iion << std::endl;
+	  
+		  output_file << (bbb->i_na)(V0,&gates) << "   " << Ta << "   " << Vnorm << std::endl;
+		}
+	  }
   }
   
   output_file.close();
