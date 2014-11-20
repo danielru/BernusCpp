@@ -19,3 +19,12 @@ build:
 clean:
 	rm -f *.out
 	rm -f build/*.o
+	rm -rf doc/html doc/latex
+
+doc/html doc/latex: src/*.C include/*.h
+	doxygen Doxyfile
+
+doc: doc/html doc/latex
+
+.PHONY:
+	doc
