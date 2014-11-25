@@ -30,14 +30,24 @@ plt.ylabel('Potential [mV]', fontsize=14)
 #plt.savefig('potential.eps')
 
 plt.figure(figsize=(8,8))
-plt.plot(t, Ta/max(Ta), label='Ta', linewidth=2.0)
-plt.plot(t, Vn, label='Vnorm', linewidth=2.0)
+ax1 = plt.gca()
+ax2 = ax1.twinx()
+lns2 = ax2.plot(t, Ta, '-', label='Ta', linewidth=2.0, color='blue')
+lns1 = ax1.plot(t, V0, '-', label='V', linewidth=2.0, color='red')
 plt.xlim(t[0], t[np.size(t)-1])
 #plt.ylim((-100, 60))
 plt.xlabel('Time [ms]', fontsize=14)
-plt.ylabel('a.u.', fontsize=14)
-plt.legend()
-#plt.savefig('tension.eps')
+ax2.set_ylim(-5, 60)
+ax2.set_ylabel('Tension [kPa].', fontsize=14)
+
+ax1.set_ylabel('Potential [mV].', fontsize=14)
+ax1.set_ylim(-100, 50)
+
+lns = lns1+lns2
+labs = [l.get_label() for l in lns]
+ax1.legend(lns, labs, loc=0)
+
+plt.savefig('tension.eps')
 
 # And plot it.
 plt.figure(figsize=(8,8))
