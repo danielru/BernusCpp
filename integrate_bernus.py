@@ -36,7 +36,7 @@ lns2 = ax2.plot(t, Ta, '-', label='Ta', linewidth=2.0, color='blue')
 lns1 = ax1.plot(t, V0, '-', label='V', linewidth=2.0, color='red')
 plt.xlim(t[0], t[np.size(t)-1])
 #plt.ylim((-100, 60))
-plt.xlabel('Time [ms]', fontsize=14)
+ax1.set_xlabel('Time [ms]', fontsize=14)
 ax2.set_ylim(-5, 60)
 ax2.set_ylabel('Tension [kPa].', fontsize=14)
 
