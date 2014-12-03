@@ -11,6 +11,6 @@ Documentation
 
 If doxygen is installed, run 
 
-$ doxygen Doxyfile
+$ make doc
 
 This creates a html and a latex documentation in the doc directory.
