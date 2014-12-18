@@ -38,7 +38,8 @@ public:
   // destructor declared virtual to ensure proper polymorphic delete
   virtual ~Iionmodel() {};
   
-  //! @todo add docu
+  //! Initialize sets the gating variables to the model's resting potential. It also resizes #gates to the correct length equal to the number of gating variables for the used model.
+  //! @param[in] gates A pointer to a standard vector
   virtual void initialize(std::vector<double>* gates) = 0;
   
   //! Computes \\( I_{\rm ion} \\) using the current values of the gating variables and a given membrane potential \\( v \\).

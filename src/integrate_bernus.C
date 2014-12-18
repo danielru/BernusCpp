@@ -24,7 +24,7 @@ int main(int args, char** argv) {
   double V0;
   double const Tend = 500;
   int const nsteps  = 1e4;
-  int const npacing = 2;
+  int const npacing = 1;
   double const dt   = Tend/( (double) nsteps );
   double Iion;
   double Ta = 0;
