@@ -14,13 +14,13 @@ int main(int args, char** argv) {
   std::fstream output_file;
 
   double const capacitance = 1.0;
-  double const Vrest = -90.272;
+  double const Vrest = -92.189;
   double const Vmax = 0;
   double const eps_recovery    = 0.01;
   double const eps_development = 0.04;
   double const kTa  = 47.9;
 
-  double const Vpace = 30.272;
+  double const Vpace = 32.272;
   double V0;
   double const Tend = 500;
   int const nsteps  = 1e4;
@@ -99,6 +99,7 @@ int main(int args, char** argv) {
   std::cout << "Total runtime:                       " << time_in_sec << std::endl;
   std::cout << "Average time per ion model timestep: " << time_in_sec/( (double) nsteps) << std::endl;
 
+  std::cout << "Potential at final time:" << V0;
   // Print out steady-state values for gating variables:
   std::cout << std::endl;
   return 0;
